@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk.poom.mapper.RehomeMapper">
+
+<insert id="rehomeAdd" parameterType="com.hk.poom.dto.RehomeAddDTO">
+<selectKey resultType="int" keyProperty="bno" order="BEFORE">
+        SELECT MAX(BNO)+1 FROM BOARD 
+    </selectKey>
+insert all
+into rehome (bno, rno, mno, gender, age, neut, vac, cost, cat_r)
+values (#{bno},#{rno}, #{mno}, #{gender}, #{age}, #{neut}, #{vac}, #{cost},#{cat_r})
+
+into board (type_b, bno, title, cre_date_b, mod_date_b, viewcnt, likecnt, reportcnt, stmt_b, cont_b, id_writer)
+values (#{type_b},#{bno}, #{title}, sysdate, sysdate, #{viewcnt}, #{likecnt}, #{reportcnt}, #{stmt_b}, #{cont_b}, #{id_writer})
+   select * from dual
+
+   <!--  insert into rehome (bno, rno, mno, gender, age, neut, vac, cost, quecnt)
+   values (#{bno},#{rno}, #{mno}, #{gender}, #{age}, #{neut}, #{vac}, #{cost}, #{quecnt})-->
+   
+   <!--  insert into board (type_b, bno, title, cre_date_b, mod_date_b, viewcnt, likecnt, reportcnt, stmt_b, cont_b, id_writer)
+   values (#{type_b},#{bno}, #{title}, sysdate, sysdate, #{viewcnt}, #{likecnt}, #{reportcnt}, #{stmt_b}, #{cont_b}, #{id_writer})
+   select * from dual-->
+</insert>
+
+<select id="rehomeList" resultType="com.hk.poom.dto.RehomeAddDTO">
+SELECT * FROM REHOME r, BOARD b WHERE r.BNO = b.BNO 
+</select>
+
+<select id="rehomeGetOne" resultType="com.hk.poom.dto.RehomeUpdateDTO">
+select * from BOARD  where BNO=#{bno} 
+</select>
+
+<update id="rehomeUpdate">
+update rehome
+set  bno=#{bno}
+,    rno=#{rno}
+,    mno=#{mno}
+,    gender=#{gender}
+,    age=#{age}
+,    neut=#{neut}
+,    vac=#{vac}
+,    cost=#{cost}
+,    cat_r=#{cat_r}
+    where bno=#{bno}
+     
+
+</update>
+<update id="rehomeUpdate1">
+update board
+set  type_b=#{type_b}
+,    bno=#{bno}
+,    title=#{title}
+,    mod_date_b=sysdate
+,    viewcnt=#{viewcnt}+1
+,    likecnt=#{likecnt}
+,    reportcnt=#{reportcnt}
+,    stmt_b=#{stmt_b}
+,    cont_b=#{cont_b}
+,    id_writer=#{id_writer}
+    where bno=#{bno}
+    
+    </update>
+    
+<delete id="rehomeDelete">
+{
+call
+begin
+delete from rehome where bno=#{bno};
+delete from board where bno=#{bno};
+end
+}
+</delete> 
+
+    
+    
+    
+    
+    
+    
+</mapper>
