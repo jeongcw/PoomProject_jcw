@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.hk.poom.dto.RehomeAddDTO;
 import com.hk.poom.dto.RehomeListDTO;
 import com.hk.poom.dto.RehomeReadDTO;
+import com.hk.poom.dto.RehomeReportDTO;
 import com.hk.poom.dto.RehomeUpdateDTO;
 
 @Repository
@@ -19,5 +20,7 @@ public interface RehomeMapper {
 	public int rehomeUpdate1( RehomeUpdateDTO rehomeUpdateDTO );
 	public int rehomeDelete( int bno );
 	public RehomeReadDTO rehomeRead( int bno );
+	public RehomeReportDTO rehomeGetOne1( int bno );
+	public int report(RehomeReportDTO report);
 	
 }

@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Rehome List</title>
+
 </head>
 <jsp:include page="../include/header.jsp"></jsp:include>
 
@@ -49,6 +50,7 @@
                       <th>수정일</th>
                       <th>수정</th>
                       <th>삭제</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -72,10 +74,14 @@
                       <td><fmt:formatDate pattern="yyyy-MM-dd" value="${rehomeList.mod_date_b }" /></td>
                       <td><a href='update?bno=<c:out value="${rehomeList.bno}" />' ><c:out value="수정" /></a></td>
                       <td><a href='delete?bno=<c:out value="${rehomeList.bno}" />' ><c:out value="삭제" /></a></td>
+                       <td><a href='report?bno=<c:out value="${rehomeList.bno}" />' ><c:out value="신고" /></a></td>
+                       
                     </tr>
                     </c:forEach>
                   </tbody>
                 </table>
+               
+               
               </div>
             </div>
           </div>

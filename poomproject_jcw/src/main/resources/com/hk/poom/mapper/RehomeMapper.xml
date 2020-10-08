@@ -73,10 +73,14 @@ end
 }
 </delete> 
 
+<select id="rehomeGetOne1" resultType="com.hk.poom.dto.RehomeReportDTO">
+select * from BOARD  where BNO=#{bno} 
+</select>
+   
+<insert id="report" parameterType="com.hk.poom.dto.RehomeReportDTO">
+insert into report (bno, report_cont)
+values (#{bno}, #{report_cont})
+</insert>    
     
-    
-    
-    
-    
-    
+ 
 </mapper>

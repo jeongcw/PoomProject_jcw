@@ -52,6 +52,8 @@ public class RehomeUpdateDTO {
 	   int reportcnt;
 	   //회원상태
 	   int stmt_b;
+	   //신고내용
+	   String report_cont;
 	
 	// Getter & Setter	
 	public int getType_b() {
@@ -247,13 +249,22 @@ public class RehomeUpdateDTO {
 	}
 	
 	   
+	public String getReport_cont() {
+		return report_cont;
+	}
+
+	public void setReport_cont(String report_cont) {
+		this.report_cont = report_cont;
+	}
+
 	@Override
 	public String toString() {
 		return "RehomeUpdateDTO [type_b=" + type_b + ", bno=" + bno + ", rno=" + rno + ", mno=" + mno + ", title="
 				+ title + ", id_writer=" + id_writer + ", img_r1=" + img_r1 + ", img_r2=" + img_r2 + ", img_r3="
 				+ img_r3 + ", img_r4=" + img_r4 + ", img_r5=" + img_r5 + ", cat_r=" + cat_r + ", gender=" + gender
 				+ ", vac=" + vac + ", age=" + age + ", neut=" + neut + ", cost=" + cost + ", cont_b=" + cont_b
-				+ ", mod_date_b=" + mod_date_b + "]";
+				+ ", cre_date_b=" + cre_date_b + ", mod_date_b=" + mod_date_b + ", viewcnt=" + viewcnt + ", likecnt="
+				+ likecnt + ", reportcnt=" + reportcnt + ", stmt_b=" + stmt_b + ", report_cont=" + report_cont + "]";
 	}
 
 	

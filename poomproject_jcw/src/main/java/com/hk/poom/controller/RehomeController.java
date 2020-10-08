@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hk.poom.dto.RehomeAddDTO;
+import com.hk.poom.dto.RehomeReportDTO;
 import com.hk.poom.dto.RehomeUpdateDTO;
 import com.hk.poom.service.RehomeService;
 
@@ -75,21 +76,17 @@ public class RehomeController {
         
       return "redirect:/poom/rehome/list";
    }
-
+   
+   @GetMapping("/poom/rehome/report")
+   public String rehomeGetOne1(@RequestParam("bno") int bno, Model model) {
+	   model.addAttribute("rehomeGetOne1",rehomeService.rehomeGetOne(bno));
+	   return "rehome/report";
+   }
+   @PostMapping("/poom/rehome/report")
+   public String report(Model model, RehomeReportDTO report) {
+	   model.addAttribute("report",rehomeService.report(report));
+	       
+      return "rehome/reportDone";
+   }
 }
    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-
