@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk.poom.mapper.MemberMapper">
+
+
+<select id="memberLogin" resultType="com.hk.poom.dto.LoginDTO">
+	SELECT * FROM MEMBER WHERE ID=#{id} AND PWD=#{pwd}
+</select>
+
+<insert id="memberRegisterPer" parameterType="com.hk.poom.dto.RegisterPerDTO">
+    <selectKey resultType="int" keyProperty="mno" order="BEFORE">
+        SELECT MAX(MNO)+1 FROM MEMBER
+    </selectKey>
+    INSERT ALL
+		INTO MEMBER (ID, PWD, EMAIL, NAME, ADDRESS, TEL, MENT, PROF, TYPE_M, MNO, STMT_M, CRE_DATE_M, MOD_DATE_M, SALECNT, BUYCNT) 
+		VALUES (#{id}, #{pwd}, #{email}, #{name}, #{address}, #{tel}, #{ment}, 'profile.jpg', 1, #{mno}, 1, SYSDATE , SYSDATE, 0, 0)
+		
+		INTO PERSON (MNO, FAV, PET) 
+		VALUES (#{mno}, #{fav}, #{pet})
+	
+	SELECT * FROM DUAL
+</insert>
+
+<select id="idDupChk" resultType="com.hk.poom.dto.LoginDTO">
+	SELECT * FROM MEMBER WHERE ID=#{id}
+</select>
+
+<select id="emailDupChk" resultType="com.hk.poom.dto.LoginDTO">
+	SELECT * FROM MEMBER WHERE EMAIL=#{email}
+</select>
+
+
+<select id="memberFindId" resultType="com.hk.poom.dto.FindIdDTO">
+	select * from member where name=#{name}
+</select>
+
+</mapper>

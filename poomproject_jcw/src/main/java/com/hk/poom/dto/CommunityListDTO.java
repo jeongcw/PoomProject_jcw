@@ -1,0 +1,107 @@
+package com.hk.poom.dto;
+
+import java.util.Date;
+
+public class CommunityListDTO {
+
+	//글 유형
+	int type_b;
+	//소통 카테고리
+	int cat_c;
+	//게시글 번호
+	int bno;   
+	//소통글번호 
+	int cno;	   
+	// 제목 
+	String title;          
+	//게시글작성자 
+	String id_writer;  
+	//작성일 
+	Date mod_date_b;      
+	//사진유무체크 
+	boolean img_chk;      
+	//리플갯수 
+	int replyCnt;     
+	//조회수   	
+	int viewCnt;
+	//추천수
+	int likeCnt;
+
+	
+	// Getter & Setter
+	public int getType_b() {
+		return type_b;
+	}
+	public void setType_b(int type_b) {
+		this.type_b = type_b;
+	}
+	public int getCat_c() {
+		return cat_c;
+	}
+	public void setCat_c(int cat_c) {
+		this.cat_c = cat_c;
+	}
+	public int getBno() {
+		return bno;
+	}
+	public void setBno(int bno) {
+		this.bno = bno;
+	}
+	public int getCno() {
+		return cno;
+	}
+	public void setCno(int cno) {
+		this.cno = cno;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getId_writer() {
+		return id_writer;
+	}
+	public void setId_writer(String id_writer) {
+		this.id_writer = id_writer;
+	}
+	public Date getMod_date_b() {
+		return mod_date_b;
+	}
+	public void setMod_date_b(Date mod_date_b) {
+		this.mod_date_b = mod_date_b;
+	}
+	public boolean isImg_chk() {
+		return img_chk;
+	}
+	public void setImg_chk(boolean img_chk) {
+		this.img_chk = img_chk;
+	}
+	public int getReplyCnt() {
+		return replyCnt;
+	}
+	public void setReplyCnt(int replyCnt) {
+		this.replyCnt = replyCnt;
+	}
+	public int getViewCnt() {
+		return viewCnt;
+	}
+	public void setViewCnt(int viewCnt) {
+		this.viewCnt = viewCnt;
+	}
+	public int getLikeCnt() {
+		return likeCnt;
+	}
+	public void setLikeCnt(int likeCnt) {
+		this.likeCnt = likeCnt;
+	}
+	
+	// toString()
+	@Override
+	public String toString() {
+		return "CommunityListDTO [type_b=" + type_b + ", cat_c=" + cat_c + ", bno=" + bno + ", cno=" + cno + ", title="
+				+ title + ", id_writer=" + id_writer + ", mod_date_b=" + mod_date_b + ", img_chk=" + img_chk
+				+ ", replyCnt=" + replyCnt + ", viewCnt=" + viewCnt + ", likeCnt=" + likeCnt + "]";
+	}
+	
+}
