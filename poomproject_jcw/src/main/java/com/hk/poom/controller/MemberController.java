@@ -4,6 +4,8 @@ package com.hk.poom.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.hk.poom.dto.FindIdDTO;
 import com.hk.poom.dto.LoginDTO;
+import com.hk.poom.dto.ProfUploadDTO;
+import com.hk.poom.dto.RegisterComDTO;
 import com.hk.poom.dto.RegisterPerDTO;
 import com.hk.poom.service.MemberService;
 
@@ -45,9 +49,10 @@ public class MemberController {
 	}
 	
 	@PostMapping("/poom/register/com")
-	public String registerComPost( ) {
+	public String registerComPost(Model model, RegisterComDTO registerComDTO,  @RequestParam("name") String name) {
 		
-		
+		memberService.memberRegisterCom(registerComDTO);
+		model.addAttribute("name", name);
 		return "member/registerComPost";
 	}
 	
@@ -55,167 +60,91 @@ public class MemberController {
 	
 	@GetMapping("/poom/register/per")
 	public String registerPer( ) {
-		
+		//logger.info("MemberController_Get_/poom/register/per 실행");
 		
 		return "member/registerPer";
 	}
 	
+	
 	@GetMapping("/poom/register/new")
 	public String registerNew( ) {
-		logger.info("MemberController_Get_/poom/register/new 실행");
+		//logger.info("MemberController_Get_/poom/register/new 실행");
 		
 		return "member/registerNew";
 	}
 	
 	@PostMapping("/poom/register/new")
 	public String registerNewPost( Model model, RegisterPerDTO registerPerDTO, @RequestParam("prof") MultipartFile prof, @RequestParam("name") String name ) throws IOException {
-		logger.info("MemberController_Post_/poom/register/new 실행");
-		logger.info("신규 개인 회원 입력 정보 = " + registerPerDTO.toString());
-		logger.info("프로필  파일 이름 = " + prof.getOriginalFilename());
+		//logger.info("MemberController_Post_/poom/register/new 실행");
+		//logger.info("신규 개인 회원 입력 정보 = " + registerPerDTO.toString());
 		
-		// 회원 정보 저장
+		// 입력받은 회원 정보 저장
 		memberService.memberRegisterPer(registerPerDTO);
 		model.addAttribute("name", name);
 		
-		// import java.io
-		// sc.getRealPath : browser deployment location에서 project명까지의 경로
-		File targetFile = new File(sc.getRealPath("/resources/fileupload/") + prof.getOriginalFilename());
-		logger.info("파일의 실제 저장 위치(실행 디렉토리) = " + targetFile);
-			
-		try {
-			// import java.io
-			// 소스 디렉토리에 저장된 파일을 실행 디렉토리에 복사하라는 명령?
-			InputStream fileStream = prof.getInputStream();
-			FileUtils.copyInputStreamToFile(fileStream, targetFile);
-		} catch (Exception e) {
-			FileUtils.deleteQuietly(targetFile);
-			e.printStackTrace();
+		// 업로드한 프로필 파일 저장
+		// 1) 업로드 시간으로 파일 이름 수정하기 (for 파일명 중복 방지)
+		//logger.info("업로드한 prof 파일 이름 = " + prof.getOriginalFilename());
+		String nowTime = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+		//logger.info("nowTime = " + nowTime);
+	    // sc.getRealPath : browser deployment location에서 project명까지의 경로  (D:\SRC_Spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\PoomProject-mini)
+	 	String realPath = sc.getRealPath("/resources/prof/");
+		String dbSaveName = "";
+		if ( prof.isEmpty() ) {	// 회원 가입할 때 프로필 사진을 업로드하지 않음 -> 기본 이미지를 prof 아래에 넣어놓고, 그 파일명을 기본값으로 넣어줌
+			dbSaveName = "baseProf.png";
+		} else {	// 회원 가입할 때 프로필 사진을 업로드함
+			dbSaveName = nowTime + prof.getOriginalFilename().substring(prof.getOriginalFilename().lastIndexOf("."));	// 업로드시간.확장자
+			//logger.info("dbSaveName = " + dbSaveName);
+			// File(String pathname) : pathname에 해당되는 파일의 File 객체를 생성한다.
+		 	File oldProfFile = new File(realPath + prof.getOriginalFilename());	// 업로드한 파일이 실제로 저장되는 위치  + 파일명 (확장자 포함) => 실행 디렉토리
+		    File newProfFile = new File(realPath + dbSaveName);
+		    oldProfFile.renameTo(newProfFile);	// 파일명 변경
+			//logger.info("newProfFile = " + newProfFile);
+			try {
+				// 소스 디렉토리에 저장된 파일을 실행 디렉토리에 복사하라는 명령?
+				InputStream fileStream = prof.getInputStream();
+				FileUtils.copyInputStreamToFile(fileStream, newProfFile);
+			} catch (Exception e) {
+				FileUtils.deleteQuietly(newProfFile);
+				e.printStackTrace();
+			}
 		}
-		
-		// jsp에서 해당 이미지를 출력할 수 있게.. /resources로 시작하는 경로를 model에 저장해놓기
-		model.addAttribute("imgSrc", "/resources/fileupload/" + prof.getOriginalFilename());
-		
-//		if ( prof!=null ) {
-//			// jsp에서 해당 이미지를 출력할 수 있게.. /resources로 시작하는 경로를 model에 저장해놓기
-//			model.addAttribute("imgSrc", "/resources/fileupload/" + prof.getOriginalFilename());
-//	    } else {
-//	    	model.addAttribute("imgSrc", "/resources/img/baseProf.png");
-//	    }
-		
-		
-		
-		/*
-//		// 프로필 사진 저장
-//		String profUrl = memberService.profRestore(prof);
-//		model.addAttribute("profUrl", profUrl);
-		
-//		// 파일 업로드
-//		// sc.getRealPath : browser deployment location에서 project명까지의 경로
-//		File profUrl = new File(sc.getRealPath("/resources/img/") + prof.getOriginalFilename());
-//		logger.info("파일의 실제 저장 위치(실행 디렉토리) = " + profUrl);
-//		
-//		try {
-//			// 소스 디렉토리에 저장된 파일을 실행 디렉토리에 복사하라는 명령?
-//			InputStream fileStream = prof.getInputStream();
-//			FileUtils.copyInputStreamToFile(fileStream, profUrl);
-//		} catch (Exception e) {
-//			FileUtils.deleteQuietly(profUrl);
-//			e.printStackTrace();
-//		}
-//		
-//		// jsp에서 해당 이미지를 출력할 수 있게.. /resources로 시작하는 경로를 model에 저장해놓기
-//		model.addAttribute("imgSrc", "/resources/img/" + prof.getOriginalFilename());
-		
-		
-		
-		// .getRealPath : browser deployment location에서 project명까지의 경로
-		// String savePath = "D:/Projects/workspace/projectName/WebContent/folderName";
-		String savePath = sc.getRealPath("/resources/img/"); // 파일이 저장될 프로젝트 안의 폴더 경로
-		// 파일 정보
-	    String profFileFullName = prof.getOriginalFilename(); // 파일명.확장자
-	    String profOnlyFileName = profFileFullName.substring(0, profFileFullName.indexOf(".")); // 파일명
-	    String profExtName = profFileFullName.substring(profFileFullName.indexOf(".")); // 확장자
-	    Long size = prof.getSize();	// 사이즈
-	    
-	    // DB에 저장될 파일이름 (앞에 날짜 추가)
-	    Calendar calendar = Calendar.getInstance();
-	    String dbSaveName = "";
-	    dbSaveName += calendar.get(Calendar.YEAR);
-	    dbSaveName += calendar.get(Calendar.MONTH);
-	    dbSaveName += calendar.get(Calendar.DATE);
-	    dbSaveName += calendar.get(Calendar.HOUR);
-	    dbSaveName += calendar.get(Calendar.MINUTE);
-	    dbSaveName += calendar.get(Calendar.SECOND);
-	    dbSaveName += calendar.get(Calendar.MILLISECOND);
-	    //dbSaveName += profFileFullName;
-	    //String fullPath = savePath + "\\" + dbSaveName;
-	    
-//		// 저장된 파일을 jsp에서 부를때 경로
-//		String profPath = sc.getRealPath("/resources/img/");
-//		public String profRestore( MultipartFile prof ) throws IOException {
-//			String profUrl = null;
-//			
-//			writeFile(prof, dbFileName);
-//			profUrl = PREFIX_URL + dbFileName;
-//			memberMapper.profRestore( profUrl );
-//			return profUrl;
-//		}
-	    
-	    if ( prof!=null ) {
-	        try {
-	            byte[] bytes = prof.getBytes();
-	            FileOutputStream fos = new FileOutputStream(savePath + "/" + dbSaveName);
-	            fos.write(bytes);
-	            fos.close();
-	            model.addAttribute("resultMsg", dbSaveName += profFileFullName);
-	        } catch (Exception e) {
-	            model.addAttribute("resultMsg", "파일을 업로드하는 데에 실패했습니다.");
-	        }
-	    } else {
-	        model.addAttribute("resultMsg", "baseProf.png");
-	    }
-	     
-//	    return "jspPage";
+		// 2) 수정된 파일 이름으로 DB에 저장하기
+		ProfUploadDTO profUploadDTO = new ProfUploadDTO();
+		profUploadDTO.setMno(registerPerDTO.getMno());
+		profUploadDTO.setDbSaveName(dbSaveName);
+		memberService.profUpload(profUploadDTO);
+		// Post.jsp에서 해당 이미지를 출력할 수 있게.. /resources로 시작하는 경로를 model에 저장해놓기
+		model.addAttribute("prof", "/resources/prof/" + dbSaveName);
 
-
-
-
-	//	
-//		// 파일을 실제로 write 하는 메서드
-//		private boolean writeFile(MultipartFile multipartFile, String dbFileName) throws IOException{
-//			boolean result = false;
-//			
-//			return result;
-//		}
-		
-		
-		*/
 		return "member/registerNewPost";
 	}
 	
 	
 	@GetMapping("/poom/login")
 	public String login( ) {
-		logger.info("MemberController_Get_/poom/login 실행");
+		//logger.info("MemberController_Get_/poom/login 실행");
 		
 		return "member/login";
 	}
 	
 	@PostMapping("/poom/login")
 	public String loginPost( HttpServletRequest request, HttpSession session, LoginDTO loginDTO ) {
-		logger.info("MemberController_Post_/poom/login 실행");
-		logger.info("로그인할 member = " + loginDTO.toString());
+		//logger.info("MemberController_Post_/poom/login 실행");
+		//logger.info("로그인할 member = " + loginDTO.toString());
 		
 		LoginDTO loginMember = memberService.memberLogin( loginDTO );
 		if ( loginMember!= null ) {
-			logger.info("로그인 성공");
+			//logger.info("로그인 성공");
 			
 			session.setAttribute("loginMember", loginMember);
+			// 로그인한 사람의 prof (db에 저장된 파일명을 가져옴)
+			session.setAttribute("prof", memberService.profGet(loginMember.getMno()));
 			
 			//로그인 성공시 홈으로
 			return "home";
 		} else {
-			logger.info("로그인 실패");
+			//logger.info("로그인 실패");
 			
 			//로그인 실패시
 			return "member/loginFail";
@@ -225,7 +154,7 @@ public class MemberController {
 	
 	@GetMapping("/poom/logout")
 	public String logout( HttpSession session ) {
-		logger.info("MemberController_Get_/poom/logout 실행");
+		//logger.info("MemberController_Get_/poom/logout 실행");
 		
 		session.invalidate();
 		

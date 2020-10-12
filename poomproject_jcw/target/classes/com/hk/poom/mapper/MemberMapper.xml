@@ -9,13 +9,17 @@
 	SELECT * FROM MEMBER WHERE ID=#{id} AND PWD=#{pwd}
 </select>
 
+<select id="profGet" resultType="String">
+	SELECT PROF FROM MEMBER WHERE MNO=#{mno}
+</select>
+
 <insert id="memberRegisterPer" parameterType="com.hk.poom.dto.RegisterPerDTO">
     <selectKey resultType="int" keyProperty="mno" order="BEFORE">
         SELECT MAX(MNO)+1 FROM MEMBER
     </selectKey>
     INSERT ALL
-		INTO MEMBER (ID, PWD, EMAIL, NAME, ADDRESS, TEL, MENT, PROF, TYPE_M, MNO, STMT_M, CRE_DATE_M, MOD_DATE_M, SALECNT, BUYCNT) 
-		VALUES (#{id}, #{pwd}, #{email}, #{name}, #{address}, #{tel}, #{ment}, 'profile.jpg', 1, #{mno}, 1, SYSDATE , SYSDATE, 0, 0)
+		INTO MEMBER (ID, PWD, EMAIL, NAME, ADDRESS, TEL, MENT, TYPE_M, MNO, STMT_M, CRE_DATE_M, MOD_DATE_M, SALECNT, BUYCNT) 
+		VALUES (#{id}, #{pwd}, #{email}, #{name}, #{address}, #{tel}, #{ment}, 1, #{mno}, 1, SYSDATE , SYSDATE, 0, 0)
 		
 		INTO PERSON (MNO, FAV, PET) 
 		VALUES (#{mno}, #{fav}, #{pet})
@@ -31,9 +35,26 @@
 	SELECT * FROM MEMBER WHERE EMAIL=#{email}
 </select>
 
+<update id="profUpload">
+	UPDATE MEMBER SET PROF=#{dbSaveName} WHERE MNO=#{mno}
+</update>
 
 <select id="memberFindId" resultType="com.hk.poom.dto.FindIdDTO">
 	select * from member where name=#{name}
 </select>
+
+<insert id="memberRegisterCom" parameterType="com.hk.poom.dto.RegisterComDTO">
+ <selectKey resultType="int" keyProperty="mno" order="BEFORE">
+        SELECT MAX(MNO)+1 FROM MEMBER
+ </selectKey>
+    INSERT ALL
+      INTO MEMBER (ID, PWD, EMAIL, NAME, ZIPCODE , FIRSTADDR , SECONADDR , EXTRAADDR , TEL, MENT, PROF, TYPE_M, MNO, STMT_M, CRE_DATE_M, MOD_DATE_M, SALECNT, BUYCNT) 
+      VALUES (#{id}, #{pwd}, #{email}, #{name}, #{zipCode}, #{firstAddr}, #{secondAddr}, #{extraAddr}, #{tel}, #{ment}, 'profile.jpg', 2, #{mno}, 0, SYSDATE , SYSDATE, 0, 0)
+      
+     INTO COMPANY (MNO, BRN_IMG, PERM,BRN,URL_C) 
+      VALUES (#{mno}, 'image.jpg', '0', #{brn},#{url_c})
+   
+   SELECT * FROM DUAL
+</insert>
 
 </mapper>

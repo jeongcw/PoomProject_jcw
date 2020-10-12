@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.hk.poom.dto.FindIdDTO;
 import com.hk.poom.dto.FindPwdDTO;
 import com.hk.poom.dto.LoginDTO;
+import com.hk.poom.dto.ProfUploadDTO;
 import com.hk.poom.dto.RegisterComDTO;
 import com.hk.poom.dto.RegisterPerDTO;
 import com.hk.poom.mapper.MemberMapper;
@@ -15,9 +16,14 @@ public class MemberService {
 
 	@Autowired 
 	MemberMapper memberMapper;
+	
 
 	public LoginDTO memberLogin( LoginDTO loginDTO ) {
 		return memberMapper.memberLogin( loginDTO );
+	}
+	
+	public String profGet( int mno ) {
+		return memberMapper.profGet( mno );
 	}
 
 	public int memberRegisterCom( RegisterComDTO registerComDTO ) {
@@ -29,7 +35,7 @@ public class MemberService {
 		int retVal = memberMapper.memberRegisterPer( registerPerDTO );
 		return retVal;
 	}
-
+	
 	public LoginDTO idDupChk( String id ) {
 		return memberMapper.idDupChk( id );
 	}
@@ -41,7 +47,12 @@ public class MemberService {
 	public FindIdDTO memberFindId( FindIdDTO findIdDTO ) {
 		return memberMapper.memberFindId( findIdDTO );
 	}
-
+	
+	public int profUpload( ProfUploadDTO profUploadDTO ) {
+		int retVal = memberMapper.profUpload( profUploadDTO );
+		return retVal;
+	}
+	
 	public FindPwdDTO memberFindPwd( FindPwdDTO findPwdDTO ) {
 		return memberMapper.memberFindPwd( findPwdDTO );
 	}

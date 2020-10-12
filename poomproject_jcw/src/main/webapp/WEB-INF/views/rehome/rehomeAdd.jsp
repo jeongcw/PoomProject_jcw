@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>rehome add</title>
+<jsp:include page="../include/inHead.jsp"></jsp:include>
 </head>
-<body>
+<jsp:include page="../include/header.jsp"></jsp:include>
 <h1>게시물등록 연습</h1>
 <form action='add' method='post'>
 
@@ -58,5 +59,4 @@
   
   <input type="submit" value="Submit"><br>
 </form>
-</body>
-</html>
+<jsp:include page="../include/footer.jsp"></jsp:include>

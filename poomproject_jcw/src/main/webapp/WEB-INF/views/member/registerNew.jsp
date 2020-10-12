@@ -136,7 +136,7 @@
 		멘트 : 
 			<input type="text" name="ment"><br />
  		프로필 사진 : 
-			<input type="file" name="prof"><button>업로드?</button><br />
+			<input type="file" name="prof" value=""><button>업로드?</button><br />
 		관심 분야 : 
 			<select form="registerNewForm" name="fav">
         		<option value="0">선택안함</option>

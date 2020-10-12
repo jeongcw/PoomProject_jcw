@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>rehome add post</title>
+<jsp:include page="../include/inHead.jsp"></jsp:include>
 </head>
 <jsp:include page="../include/header.jsp"></jsp:include>
 분양 추가 포스트
