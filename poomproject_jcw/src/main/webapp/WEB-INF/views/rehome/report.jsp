@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Rehome Update</title>
+<title>신고페이지</title>
 </head>
-<jsp:include page="../include/header.jsp"></jsp:include>
 
+<body>
 <form id='report' action='report' method='post'>
 
 글번호 : <input type="text" name="bno" value="${rehomeGetOne1.bno }" readonly><br><br>
@@ -20,5 +20,6 @@
 <input type='submit' value='전송'>
 <input type='reset' value='취소'>
 <input type='button' onclick='location.href="list"' value='리스트로'>
-
-</form><jsp:include page="../include/footer.jsp"></jsp:include>
+</form>
+</body>
+</html>

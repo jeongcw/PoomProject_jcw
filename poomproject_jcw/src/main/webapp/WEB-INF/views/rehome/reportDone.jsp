@@ -9,13 +9,13 @@
 <title>Rehome List</title>
 
 </head>
-<jsp:include page="../include/header.jsp"></jsp:include>
 
+<body>
 <h1>신고 결과</h1>
-<b>정상적으로 접수 되었습니다</b>
-<a href="list">리스트로 이동하시려면 클릭을 아니면 5초후에 자동이동합니다</a>
+<b>정상적으로 접수 되었습니다</b><br>
+5초후에 자동으로 창이 닫힙니다
 <script>
-	setTimeout(function() {window.location='list';},5000)
+	setTimeout(function() {window.close();},5000)
 </script>
-
-<jsp:include page="../include/footer.jsp"></jsp:include>
+</body>
+</html>
