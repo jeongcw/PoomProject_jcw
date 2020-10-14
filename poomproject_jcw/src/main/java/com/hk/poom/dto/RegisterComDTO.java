@@ -28,8 +28,6 @@ public class RegisterComDTO {
 	int tel;
 	//멘트
 	String ment;
-	//프로필 사진
-	String prof;
 	//가입일
 	Date cre_date_m;
 	//수정일
@@ -117,12 +115,6 @@ public class RegisterComDTO {
 	public void setMent(String ment) {
 		this.ment = ment;
 	}
-	public String getProf() {
-		return prof;
-	}
-	public void setProf(String prof) {
-		this.prof = prof;
-	}
 	public Date getCre_date_m() {
 		return cre_date_m;
 	}
@@ -169,7 +161,7 @@ public class RegisterComDTO {
 	public String toString() {
 		return "RegisterComDTO [type_m=" + type_m + ", mno=" + mno + ", id=" + id + ", pwd=" + pwd + ", email=" + email
 				+ ", name=" + name + ", zipCode=" + zipCode + ", firstAddr=" + firstAddr + ", secondAddr=" + secondAddr
-				+ ", extraAddr=" + extraAddr + ", tel=" + tel + ", ment=" + ment + ", prof=" + prof + ", cre_date_m="
+				+ ", extraAddr=" + extraAddr + ", tel=" + tel + ", ment=" + ment + ", cre_date_m="
 				+ cre_date_m + ", mod_date_m=" + mod_date_m + ", stmt_m=" + stmt_m + ", brn=" + brn + ", brn_img="
 				+ brn_img + ", url_c=" + url_c + ", perm=" + perm + "]";
 	}

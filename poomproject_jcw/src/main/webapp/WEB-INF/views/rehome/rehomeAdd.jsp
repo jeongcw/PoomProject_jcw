@@ -9,7 +9,7 @@
 </head>
 <jsp:include page="../include/header.jsp"></jsp:include>
 <h1>게시물등록 연습</h1>
-<form action='add' method='post'>
+<form action='add' method='post' enctype="multipart/form-data">
 
   <select name="type_b" id="type_b">
     <option value="0" selected>분양</option>
@@ -56,6 +56,7 @@
   <textarea id="cont_b" name="cont_b" rows="20" cols="100">
  
   </textarea><br>
+  파일 업로드 : <input type="file" name="file" multiple="multiple"><br>
   
   <input type="submit" value="Submit"><br>
 </form>

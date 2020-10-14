@@ -1,5 +1,6 @@
 package com.hk.poom.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +27,16 @@ public class MemberService {
 		return memberMapper.profGet( mno );
 	}
 
-	public int memberRegisterCom( RegisterComDTO registerComDTO ) {
-		int retVal = memberMapper.memberRegisterCom( registerComDTO );
-		return retVal;
-	}
-
 	public int memberRegisterPer( RegisterPerDTO registerPerDTO ) {
 		int retVal = memberMapper.memberRegisterPer( registerPerDTO );
 		return retVal;
 	}
 	
+	public int memberRegisterCom( RegisterComDTO registerComDTO ) {
+		int retVal = memberMapper.memberRegisterCom( registerComDTO );
+		return retVal;
+	}
+
 	public LoginDTO idDupChk( String id ) {
 		return memberMapper.idDupChk( id );
 	}

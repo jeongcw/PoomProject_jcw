@@ -14,5 +14,6 @@
 		비밀번호 : <input type="password" name="pwd"><br />
 		<input type="submit" value="로그인">
 	</form>
+	<a href="find/id">아이디</a> / <a href="find/pwd">비밀번호</a> 찾기
 
 <jsp:include page="../include/footer.jsp"></jsp:include>

@@ -13,9 +13,9 @@
 <body>
 <h1>신고 결과</h1>
 <b>정상적으로 접수 되었습니다</b><br>
-5초후에 자동으로 창이 닫힙니다
+3초후에 자동으로 창이 닫힙니다
 <script>
-	setTimeout(function() {window.close();},5000)
+	setTimeout(function() {window.close();},3000)
 </script>
 </body>
 </html>

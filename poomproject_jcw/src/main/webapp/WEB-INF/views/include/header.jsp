@@ -37,7 +37,7 @@
       </li>
       <li class="nav-item">
       	<a href="/poom/mypage?mno=${loginMember.mno}">
-		  <img style="border-radius:20px" onerror="this.src='/resources/img/testImg.jpg'" src="/resources/prof/${prof}" width="40px" height="40px">
+		  <img style="border-radius:20px" onerror="this.src='/resources/img/testImg.jpg'" src="/resources/prof/${loginMember.prof}" width="40px" height="40px">
 		</a>
       </li>
       <li class="nav-item">

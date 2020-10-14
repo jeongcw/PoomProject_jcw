@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Rehome List</title>
-
+<jsp:include page="../include/inHead.jsp"></jsp:include>
 </head>
 <jsp:include page="../include/header.jsp"></jsp:include>
 
@@ -42,6 +42,10 @@
                       <th>제목</th>
                       <th>작성자</th>
                       <th>사진1</th>
+                      <th>사진2</th>
+                      <th>사진3</th>
+                      <th>사진4</th>
+                      <th>사진5</th>
                       <th>성별</th>
                       <th>나이</th>
                       <th>분양가</th>                 
@@ -65,7 +69,11 @@
                       <td><c:out value="${rehomeList.rno }" /></td>
                        <td><c:out value="${rehomeList.title }" /></td>
                       <td><c:out value="${rehomeList.id_writer }" /></td>
-                      <td><c:out value="${rehomeList.img_r1 }" /></td>
+                      <td><img src="/resources/img/rehome/${rehomeList.img_r1 }" width="200" height="200" /></td>
+                      <td><img src="/resources/img/rehome/${rehomeList.img_r2 }" width="200" height="200" /></td>
+                      <td><img src="/resources/img/rehome/${rehomeList.img_r3 }" width="200" height="200" /></td>
+                      <td><img src="/resources/img/rehome/${rehomeList.img_r4 }" width="200" height="200" /></td>
+                      <td><img src="/resources/img/rehome/${rehomeList.img_r5 }" width="200" height="200" /></td>
                       <td><c:out value="${rehomeList.gender }" /></td>
                       <td><c:out value="${rehomeList.age }" /></td>
                       <td><c:out value="${rehomeList.cost }" /></td>                     

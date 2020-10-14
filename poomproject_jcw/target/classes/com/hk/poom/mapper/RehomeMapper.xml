@@ -9,8 +9,8 @@
         SELECT MAX(BNO)+1 FROM BOARD 
     </selectKey>
 insert all
-into rehome (bno, rno, mno, gender, age, neut, vac, cost, cat_r)
-values (#{bno},#{rno}, #{mno}, #{gender}, #{age}, #{neut}, #{vac}, #{cost},#{cat_r})
+into rehome (bno, rno, mno, gender, age, neut, vac, cost, cat_r, img_r1, img_r2, img_r3, img_r4, img_r5)
+values (#{bno},#{rno}, #{mno}, #{gender}, #{age}, #{neut}, #{vac}, #{cost},#{cat_r}, #{img_r1}, #{img_r2}, #{img_r3}, #{img_r4}, #{img_r5})
 
 into board (type_b, bno, title, cre_date_b, mod_date_b, viewcnt, likecnt, reportcnt, stmt_b, cont_b, id_writer)
 values (#{type_b},#{bno}, #{title}, sysdate, sysdate, #{viewcnt}, #{likecnt}, #{reportcnt}, #{stmt_b}, #{cont_b}, #{id_writer})

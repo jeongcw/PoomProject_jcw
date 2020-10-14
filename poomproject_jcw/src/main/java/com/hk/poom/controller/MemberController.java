@@ -1,6 +1,5 @@
 package com.hk.poom.controller;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,12 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.hk.poom.dto.FindIdDTO;
 import com.hk.poom.dto.LoginDTO;
 import com.hk.poom.dto.ProfUploadDTO;
 import com.hk.poom.dto.RegisterComDTO;
 import com.hk.poom.dto.RegisterPerDTO;
 import com.hk.poom.service.MemberService;
+
 
 
 @Controller
@@ -43,16 +42,55 @@ public class MemberController {
 	
 	@GetMapping("/poom/register/com")
 	public String registerCom( ) {
-		
+		//logger.info("MemberController_Get_/poom/register/com 실행");
 		
 		return "member/registerCom";
 	}
 	
 	@PostMapping("/poom/register/com")
-	public String registerComPost(Model model, RegisterComDTO registerComDTO,  @RequestParam("name") String name) {
+	public String registerComPost( Model model, RegisterComDTO registerComDTO, @RequestParam("prof") MultipartFile prof, @RequestParam("name") String name ) {
+		//logger.info("MemberController_Post_/poom/register/com 실행");
+		//logger.info("신규 개인 회원 입력 정보 = " + registerComDTO.toString());
 		
+		// 입력받은 회원 정보 저장
 		memberService.memberRegisterCom(registerComDTO);
 		model.addAttribute("name", name);
+		
+		// 업로드한 프로필 파일 저장
+		// 1) 업로드 시간으로 파일 이름 수정하기 (for 파일명 중복 방지)
+		//logger.info("업로드한 prof 파일 이름 = " + prof.getOriginalFilename());
+		String nowTime = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+		//logger.info("nowTime = " + nowTime);
+	    // sc.getRealPath : browser deployment location에서 project명까지의 경로  (D:\SRC_Spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\PoomProject-mini)
+	 	String realPath = sc.getRealPath("/resources/prof/");
+		String dbSaveName = "";
+		if ( prof.isEmpty() ) {	// 회원 가입할 때 프로필 사진을 업로드하지 않음 -> 기본 이미지를 prof 아래에 넣어놓고, 그 파일명을 기본값으로 넣어줌
+			dbSaveName = "baseProf.jpg";
+		} else {	// 회원 가입할 때 프로필 사진을 업로드함
+			dbSaveName = nowTime + prof.getOriginalFilename().substring(prof.getOriginalFilename().lastIndexOf("."));	// 업로드시간.확장자
+			//logger.info("dbSaveName = " + dbSaveName);
+			// File(String pathname) : pathname에 해당되는 파일의 File 객체를 생성한다.
+		 	File oldProfFile = new File(realPath + prof.getOriginalFilename());	// 업로드한 파일이 실제로 저장되는 위치  + 파일명 (확장자 포함) => 실행 디렉토리
+		    File newProfFile = new File(realPath + dbSaveName);
+		    oldProfFile.renameTo(newProfFile);	// 파일명 변경
+			//logger.info("newProfFile = " + newProfFile);
+			try {
+				// 소스 디렉토리에 저장된 파일을 실행 디렉토리에 복사하라는 명령?
+				InputStream fileStream = prof.getInputStream();
+				FileUtils.copyInputStreamToFile(fileStream, newProfFile);
+			} catch (Exception e) {
+				FileUtils.deleteQuietly(newProfFile);
+				e.printStackTrace();
+			}
+		}
+		// 2) 수정된 파일 이름으로 DB에 저장하기
+		ProfUploadDTO profUploadDTO = new ProfUploadDTO();
+		profUploadDTO.setMno(registerComDTO.getMno());
+		profUploadDTO.setDbSaveName(dbSaveName);
+		memberService.profUpload(profUploadDTO);
+		// Post.jsp에서 해당 이미지를 출력할 수 있게.. /resources로 시작하는 경로를 model에 저장해놓기
+		model.addAttribute("prof", "/resources/prof/" + dbSaveName);
+		
 		return "member/registerComPost";
 	}
 	
@@ -91,7 +129,7 @@ public class MemberController {
 	 	String realPath = sc.getRealPath("/resources/prof/");
 		String dbSaveName = "";
 		if ( prof.isEmpty() ) {	// 회원 가입할 때 프로필 사진을 업로드하지 않음 -> 기본 이미지를 prof 아래에 넣어놓고, 그 파일명을 기본값으로 넣어줌
-			dbSaveName = "baseProf.png";
+			dbSaveName = "baseProf.jpg";
 		} else {	// 회원 가입할 때 프로필 사진을 업로드함
 			dbSaveName = nowTime + prof.getOriginalFilename().substring(prof.getOriginalFilename().lastIndexOf("."));	// 업로드시간.확장자
 			//logger.info("dbSaveName = " + dbSaveName);
@@ -170,12 +208,12 @@ public class MemberController {
 	}
 	
 	
-	@PostMapping("/poom/find/id")
-	public String findIdPost( Model model, FindIdDTO findIdDTO) {
-		
-		model.addAttribute("findIdDTO", memberService.memberFindId(findIdDTO));
-		return "member/findIdPost";
-	}
+//	@PostMapping("/poom/find/id")
+//	public String findIdPost( Model model, FindIdDTO findIdDTO ) {
+//		
+//		model.addAttribute("findIdDTO", memberService.memberFindId(findIdDTO));
+//		return "member/findIdPost";
+//	}
 	
 	@GetMapping("/poom/find/pwd")
 	public String findPwd( ) {

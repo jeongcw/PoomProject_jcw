@@ -2,6 +2,8 @@ package com.hk.poom.dto;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class RehomeAddDTO {
    
    //글 유형
@@ -53,6 +55,8 @@ public class RehomeAddDTO {
    int reportcnt;
    //회원상태
    int stmt_b;
+   
+   MultipartFile file;
    
    
    // Getter & Setter
@@ -205,14 +209,20 @@ public class RehomeAddDTO {
    }
    
    
-   @Override
-   public String toString() {
-      return "RehomeAddDTO [type_b=" + type_b + ", bno=" + bno + ", rno=" + rno + ", mno=" + mno + ", title=" + title
-            + ", id_writer=" + id_writer + ", img_r1=" + img_r1 + ", img_r2=" + img_r2 + ", img_r3=" + img_r3
-            + ", img_r4=" + img_r4 + ", img_r5=" + img_r5 + ", cat_r=" + cat_r + ", gender=" + gender + ", vac="
-            + vac + ", age=" + age + ", neut=" + neut + ", cost=" + cost + ", cont_b=" + cont_b + ", cre_date_b="
-            + cre_date_b + ", mod_date_b=" + mod_date_b + ", viewcnt="
-            + viewcnt + ", likecnt=" + likecnt + ", reportcnt=" + reportcnt + ", stmt_b=" + stmt_b + "]";
-   }
+   public MultipartFile getFile() {
+	return file;
+}
+public void setFile(MultipartFile file) {
+	this.file = file;
+}
+@Override
+public String toString() {
+	return "RehomeAddDTO [type_b=" + type_b + ", bno=" + bno + ", rno=" + rno + ", mno=" + mno + ", title=" + title
+			+ ", id_writer=" + id_writer + ", img_r1=" + img_r1 + ", img_r2=" + img_r2 + ", img_r3=" + img_r3
+			+ ", img_r4=" + img_r4 + ", img_r5=" + img_r5 + ", cat_r=" + cat_r + ", gender=" + gender + ", vac=" + vac
+			+ ", age=" + age + ", neut=" + neut + ", cost=" + cost + ", cont_b=" + cont_b + ", cre_date_b=" + cre_date_b
+			+ ", mod_date_b=" + mod_date_b + ", viewcnt=" + viewcnt + ", likecnt=" + likecnt + ", reportcnt="
+			+ reportcnt + ", stmt_b=" + stmt_b + ", file=" + file + "]";
+}
    
 }
