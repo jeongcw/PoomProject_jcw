@@ -57,4 +57,18 @@
 	SELECT * FROM MEMBER WHERE NAME=#{name} AND EMAIL=#{email}
 </select>
 
+<insert id="addEmailCheck" parameterType="com.hk.poom.dto.EmailCheck">
+	insert into EMAILCHECK(EMAIL,CODE) 
+	VALUES(#{email},#{code})
+
+</insert>
+
+<select id="getDbCode" parameterType="String" resultType="String">
+  SELECT CODE FROM 
+  (SELECT CODE FROM EMAILCHECK WHERE 
+  EMAIL=#{email} ORDER BY ROWNUM DESC)
+  WHERE ROWNUM = 1
+</select>
+
+
 </mapper>

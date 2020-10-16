@@ -3,6 +3,7 @@ package com.hk.poom.mapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.hk.poom.dto.EmailCheck;
 import com.hk.poom.dto.FindIdDTO;
 import com.hk.poom.dto.FindPwdDTO;
 import com.hk.poom.dto.LoginDTO;
@@ -22,5 +23,7 @@ public interface MemberMapper {
 	public int profUpload( ProfUploadDTO profUploadDTO );
 	public FindIdDTO memberFindId( FindIdDTO findIdDTO );
 	public FindPwdDTO memberFindPwd( FindPwdDTO findPwdDTO );
+	public int addEmailCheck(EmailCheck emailCheck);
+	public String getDbCode(String email);
 	
 }

@@ -69,11 +69,11 @@
                       <td><c:out value="${rehomeList.rno }" /></td>
                        <td><c:out value="${rehomeList.title }" /></td>
                       <td><c:out value="${rehomeList.id_writer }" /></td>
-                      <td><img src="/resources/img/rehome/${rehomeList.img_r1 }" width="200" height="200" /></td>
-                      <td><img src="/resources/img/rehome/${rehomeList.img_r2 }" width="200" height="200" /></td>
-                      <td><img src="/resources/img/rehome/${rehomeList.img_r3 }" width="200" height="200" /></td>
-                      <td><img src="/resources/img/rehome/${rehomeList.img_r4 }" width="200" height="200" /></td>
-                      <td><img src="/resources/img/rehome/${rehomeList.img_r5 }" width="200" height="200" /></td>
+                      <td><img src="/resources/img/rehome/${rehomeList.img_r1 }" onerror="this.style.display='none'" width="200" height="200" /></td>
+                      <td><img src="/resources/img/rehome/${rehomeList.img_r2 }" onerror="this.style.display='none'" width="200" height="200" /></td>
+                      <td><img src="/resources/img/rehome/${rehomeList.img_r3 }" onerror="this.style.display='none'" width="200" height="200" /></td>
+                      <td><img src="/resources/img/rehome/${rehomeList.img_r4 }" onerror="this.style.display='none'" width="200" height="200" /></td>
+                      <td><img src="/resources/img/rehome/${rehomeList.img_r5 }" onerror="this.style.display='none'" width="200" height="200" /></td>
                       <td><c:out value="${rehomeList.gender }" /></td>
                       <td><c:out value="${rehomeList.age }" /></td>
                       <td><c:out value="${rehomeList.cost }" /></td>                     

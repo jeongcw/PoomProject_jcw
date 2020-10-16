@@ -65,6 +65,11 @@ public class RehomeController {
            String oriName = file[i].getOriginalFilename();
            String img_r = genID+"."+FilenameUtils.getExtension(oriName);
            
+           if (i==0) { rehomeAddDTO.setImg_r2(""); rehomeAddDTO.setImg_r3(""); rehomeAddDTO.setImg_r4(""); rehomeAddDTO.setImg_r5("");} 
+           else if (i==1) { rehomeAddDTO.setImg_r3(""); rehomeAddDTO.setImg_r4(""); rehomeAddDTO.setImg_r5(""); }
+           else if (i==2) { rehomeAddDTO.setImg_r4(""); rehomeAddDTO.setImg_r5(""); }
+           else if (i==3) { rehomeAddDTO.setImg_r5(""); }
+           
            if (i==0) { rehomeAddDTO.setImg_r1(img_r); } 
            else if (i==1) { rehomeAddDTO.setImg_r2(img_r); }
            else if (i==2) { rehomeAddDTO.setImg_r3(img_r); }
@@ -85,38 +90,7 @@ public class RehomeController {
    			e.printStackTrace();
    		}
        }
-	   
 
-
-//      String realPath = sc.getRealPath("/resources/img/rehome/");
-//      System.out.println("----------------------------------------------");
-//     
-//    	  String genID = UUID.randomUUID().toString();
-//    	  String oriName = files.getOriginalFilename();
-//    	     	  
-//    	  String img_r1 = genID+"."+FilenameUtils.getExtension(oriName);
-//    	  String savePath = realPath + img_r1;
-////    	  try {
-////    		  mf.transferTo(new File(safeFile));
-////    	  } catch (Exception e) {
-////    		  e.printStackTrace();
-////    	  }
-//    	  
-//    	  File oldProfFile = new File(realPath + files.getOriginalFilename());	// 업로드한 파일이 실제로 저장되는 위치  + 파일명 (확장자 포함) => 실행 디렉토리
-//		    File newProfFile = new File(realPath + img_r1);
-//		    oldProfFile.renameTo(newProfFile);	// 파일명 변경
-//    	  
-//    	  System.out.println("-----------완성 파일명 : "+ img_r1);
-//    	  try {
-//				// 소스 디렉토리에 저장된 파일을 실행 디렉토리에 복사하라는 명령?
-//				InputStream fileStream = files.getInputStream();
-//				FileUtils.copyInputStreamToFile(fileStream, newProfFile);
-//			} catch (Exception e) {
-//				FileUtils.deleteQuietly(newProfFile);
-//				e.printStackTrace();
-//			}
-//      
-//    	  rehomeAddDTO.setImg_r1(img_r1);
       rehomeService.rehomeAdd(rehomeAddDTO);      
       model.addAttribute("rehomeadd",rehomeAddDTO);
             

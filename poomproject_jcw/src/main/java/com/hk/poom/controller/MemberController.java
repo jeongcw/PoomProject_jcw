@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.hk.poom.dto.FindIdDTO;
 import com.hk.poom.dto.LoginDTO;
 import com.hk.poom.dto.ProfUploadDTO;
 import com.hk.poom.dto.RegisterComDTO;
@@ -208,12 +209,12 @@ public class MemberController {
 	}
 	
 	
-//	@PostMapping("/poom/find/id")
-//	public String findIdPost( Model model, FindIdDTO findIdDTO ) {
-//		
-//		model.addAttribute("findIdDTO", memberService.memberFindId(findIdDTO));
-//		return "member/findIdPost";
-//	}
+	@PostMapping("/poom/find/id")
+	public String findIdPost( Model model, FindIdDTO findIdDTO ) {
+		
+		model.addAttribute("findIdDTO", memberService.memberFindId(findIdDTO));
+		return "member/findIdPost";
+	}
 	
 	@GetMapping("/poom/find/pwd")
 	public String findPwd( ) {

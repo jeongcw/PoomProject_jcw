@@ -212,6 +212,66 @@ function checkEmail(){
 	
 }
 
+//이메일 인증 이메일 보내기
+$(document).on("click", "#emailBtn", function(){
+	      var userEmail = $("#emailDupChk").val();
+	      $.ajax({
+	         data:{email:userEmail},
+	         dataType:"json",
+	         method: "post",
+	         url: "/poom/createEmailCheck",
+	         success : function(data){
+	            if(data==false){
+	               alert("이메일을 입력해주세요");
+	            }else{
+	               alert("이메일이 발송되었습니다. 인증번호 확인 후 입력해주세요");
+	            }
+	               
+	         },
+	         error: function(data){
+	               alert("에러가 발생했습니다.");
+	               return false;
+	         }
+	      });
+	   });
+
+
+//이메일 인증 확인코드
+	   $(document).on("click", "#codeBtn", function(){
+	      var email = $("#emailDupChk").val();
+	      var userCode = $("#checkCode").val();
+	      console.log('userCode:',userCode)
+	      $.ajax({
+	         //data:{code:userCode},
+	         data:{
+	            email:email,            
+	            checkCode:userCode
+	         },
+	         method: "post",
+	         dataType: "json",
+	         //dataType: "json",
+	         url:"/poom/checkCode11",
+	         success:function(data){
+	            console.log("data는",data);
+	            if(data==0){
+	               //alert("인증이 완려되었습니다.");
+	                $('#checkCodeRet').text('인증이 완료되었습니다.');
+					$('#checkCodeRet').css('color', 'green');
+	               isComfirm = true; // 인증완료값
+	            } else {
+	               //alert("인증번호를 잘못 입력하셨습니다. 인증번호를 ");
+	                $('#checkCodeRet').text('인증번호를 잘못 입력하셨습니다. 다시 입력해주세요.');
+					$('#checkCodeRet').css('color', 'red');
+
+	            }
+	         },
+	         error:function(error){
+	            alert("에러가 발생했습니다.");
+	            console.log('error - email check:', error)
+	         }
+	      });
+	   });
+
 
 //-----------------[ 연락처 function ]-----------------
 
@@ -558,10 +618,14 @@ function execDaumPostcode() {
 					<input type="password" name="pwd" id="pwdMatChk" placeholder="Confirm Password" oninput="reCheckPwd()">
 					<div class="validation" id="pwdMatChkRet" style="font-size: 15px;"></div>
 <!-- 					<input type="hidden" id="pwdMatChkRet"><br> -->
-				<label><b>email(자동 중복체크) : </b></label>
-					<input type="text" name='email' id="emailDupChk" placeholder="E-mail" oninput="chcekEmail()">
-					<div class="validation" id="emailDupChkRet" style="font-size: 15px;"></div>										
-<!-- 					<input type="hidden" id="emailDupChkRet"><br> -->
+				<div><label><b>* 이메일 : </b></label>
+					<input type="email" name='email' id="emailDupChk" placeholder="이메일" oninput="chcekEmail()">
+					<button type="button" id="emailBtn" onclick="">본인인증</button><br/>
+					<div class="validation" id="emailDupChkRet" style="font-size: 15px;"></div>
+					인증코드 :	
+		 				<input type="text" name="checkCode" id="checkCode" placeholder="인증번호">
+		 				<button type="button" id="codeBtn" onclick="">인증번호 확인</button><br/>
+		 				<div class="validation" id="checkCodeRet" style="font-size: 15px;"></div></div>
 				
 		</fieldset>
 		<fieldset style="width:700px;margin-right:1000px">	
@@ -572,7 +636,7 @@ function execDaumPostcode() {
 					<input type="text" name="brn"  placeholder="사업자 번호"><br>
 	
 				<label><b>주소</b></label>
-            		<input type="text" id="postcode" placeholder="우편번호" name="zipCode" style="width:60px;margin-right:1px">
+            		<input type="text" id="postcode" placeholder="우편번호" name="zipCode" style="width:80px;margin-right:1px">
            			<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
             		<input type="text" id="address" placeholder="주소" name="firstAddr"><br>
             		<input type="text" id="extraAddress" placeholder="참고항목" name="extraAddr">
