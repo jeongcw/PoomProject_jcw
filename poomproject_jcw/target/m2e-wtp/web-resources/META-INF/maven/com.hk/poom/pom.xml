@@ -167,7 +167,14 @@
 
 			<classifier>jdk15</classifier>
 		</dependency>
-			
+		
+		<!-- 카테고리 -->
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
 		
 		<!-- ajax -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
@@ -198,9 +205,10 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.7</version>
 		</dependency>
+		<!-- 파일 업로드 end -->
 
 
-      <!-- 이메일 인증 2018.11.20 KW -->
+      	<!-- 이메일 인증 start -->
 		<dependency>
    		 	<groupId>com.sun.mail</groupId>
     		<artifactId>javax.mail</artifactId>
@@ -211,10 +219,9 @@
        	  <groupId>org.springframework</groupId>
        	  <artifactId>spring-context-support</artifactId>
        	  <version>${org.springframework-version}</version>
-       </dependency>
+       	</dependency>
+     	<!-- 이메일 인증 end -->
 		
-		
-		<!-- 파일 업로드 end -->
 
 	</dependencies>
 	<build>
