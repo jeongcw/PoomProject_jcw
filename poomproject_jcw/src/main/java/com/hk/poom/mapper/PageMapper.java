@@ -13,6 +13,7 @@ import com.hk.poom.dto.MypageLikeDTO;
 import com.hk.poom.dto.MypageSaleDTO;
 import com.hk.poom.dto.MypageWriteDTO;
 import com.hk.poom.dto.OtherpageDTO;
+import com.hk.poom.dto.RegisterPerDTO;
 
 @Repository
 public interface PageMapper {

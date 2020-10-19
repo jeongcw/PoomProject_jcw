@@ -25,5 +25,6 @@ public interface MemberMapper {
 	public FindPwdDTO memberFindPwd( FindPwdDTO findPwdDTO );
 	public int addEmailCheck(EmailCheck emailCheck);
 	public String getDbCode(String email);
+	public int memberPwdUpdate(FindPwdDTO findPwdDTO);
 	
 }

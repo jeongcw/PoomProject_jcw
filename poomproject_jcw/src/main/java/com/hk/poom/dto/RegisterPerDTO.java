@@ -26,6 +26,8 @@ public class RegisterPerDTO {
 	String extraAddr;
 	//연락처
 	int tel;
+	// 프로필 (카카오)
+	String profUrl;
 	//멘트
 	String ment;
 	//가입일
@@ -108,6 +110,12 @@ public class RegisterPerDTO {
 	public void setTel(int tel) {
 		this.tel = tel;
 	}
+	public String getProfUrl() {
+		return profUrl;
+	}
+	public void setProfUrl(String prof) {
+		this.profUrl = prof;
+	}
 	public String getMent() {
 		return ment;
 	}
@@ -146,12 +154,20 @@ public class RegisterPerDTO {
 	}
 	
 	// toString()
+//	@Override
+//	public String toString() {
+//		return "RegisterPerDTO [type_m=" + type_m + ", mno=" + mno + ", id=" + id + ", pwd=" + pwd + ", email=" + email
+//				+ ", name=" + name + ", zipCode=" + zipCode + ", firstAddr=" + firstAddr + ", secondAddr=" + secondAddr
+//				+ ", extraAddr=" + extraAddr + ", tel=" + tel + ", ment=" + ment + ", cre_date_m=" + cre_date_m
+//				+ ", mod_date_m=" + mod_date_m + ", stmt_m=" + stmt_m + ", fav=" + fav + ", pet=" + pet + "]";
+//	}
 	@Override
 	public String toString() {
 		return "RegisterPerDTO [type_m=" + type_m + ", mno=" + mno + ", id=" + id + ", pwd=" + pwd + ", email=" + email
 				+ ", name=" + name + ", zipCode=" + zipCode + ", firstAddr=" + firstAddr + ", secondAddr=" + secondAddr
-				+ ", extraAddr=" + extraAddr + ", tel=" + tel + ", ment=" + ment + ", cre_date_m=" + cre_date_m
-				+ ", mod_date_m=" + mod_date_m + ", stmt_m=" + stmt_m + ", fav=" + fav + ", pet=" + pet + "]";
+				+ ", extraAddr=" + extraAddr + ", tel=" + tel + ", profUrl=" + profUrl + ", ment=" + ment + ", cre_date_m="
+				+ cre_date_m + ", mod_date_m=" + mod_date_m + ", stmt_m=" + stmt_m + ", fav=" + fav + ", pet=" + pet
+				+ "]";
 	}
 	
 }

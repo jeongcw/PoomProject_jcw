@@ -6,8 +6,8 @@ public class FindPwdDTO {
 	String id;
 	//이름
 	String name;
-	//연락처
-	int tel;
+	//이메일
+	String email;
 	//비밀번호
 	String pwd;
 	
@@ -25,11 +25,12 @@ public class FindPwdDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getTel() {
-		return tel;
+	
+	public String getEmail() {
+		return email;
 	}
-	public void setTel(int tel) {
-		this.tel = tel;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getPwd() {
 		return pwd;
@@ -41,7 +42,7 @@ public class FindPwdDTO {
 	// toString()
 	@Override
 	public String toString() {
-		return "FindPwdDTO [id=" + id + ", name=" + name + ", tel=" + tel + ", pwd=" + pwd + "]";
+		return "FindPwdDTO [id=" + id + ", name=" + name + ", email=" + email + ", pwd=" + pwd + "]";
 	}
 	
 }

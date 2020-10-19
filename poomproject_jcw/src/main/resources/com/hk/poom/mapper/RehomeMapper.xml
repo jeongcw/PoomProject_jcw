@@ -4,29 +4,33 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hk.poom.mapper.RehomeMapper">
 
-<insert id="rehomeAdd" parameterType="com.hk.poom.dto.RehomeAddDTO">
+
+
+<select id="rehomeList" resultType="com.hk.poom.dto.RehomeAddDTO">
+SELECT * FROM REHOME r, BOARD b WHERE r.BNO = b.BNO ORDER BY cre_date_b asc
+</select>
+
+    
+<select id="category" resultType="com.hk.poom.dto.CategoryDTO">
+SELECT * from category start with cateCodeRef is null connect by prior cateCode = cateCodeRef
+</select>    
+    
+
+<insert id="rehomeAddPost" parameterType="com.hk.poom.dto.RehomeAddDTO">
 <selectKey resultType="int" keyProperty="bno" order="BEFORE">
         SELECT MAX(BNO)+1 FROM BOARD 
     </selectKey>
 insert all
-into rehome (bno, rno, mno, gender, age, neut, vac, cost, cat_r, img_r1, img_r2, img_r3, img_r4, img_r5)
-values (#{bno},#{rno}, #{mno}, #{gender}, #{age}, #{neut}, #{vac}, #{cost},#{cat_r}, #{img_r1}, #{img_r2}, #{img_r3}, #{img_r4}, #{img_r5})
+into rehome (bno, rno, mno, gender, age, neut, vac, cost, cateCode, img_r1, img_r2, img_r3, img_r4, img_r5)
+values (#{bno},#{rno}, #{mno}, #{gender}, #{age}, #{neut}, #{vac}, #{cost},#{cateCode}, #{img_r1}, #{img_r2}, #{img_r3}, #{img_r4}, #{img_r5})
 
-into board (type_b, bno, title, cre_date_b, mod_date_b, viewcnt, likecnt, reportcnt, stmt_b, cont_b, id_writer)
-values (#{type_b},#{bno}, #{title}, sysdate, sysdate, #{viewcnt}, #{likecnt}, #{reportcnt}, #{stmt_b}, #{cont_b}, #{id_writer})
-   select * from dual
+into board (cateCode, bno, title, cre_date_b, mod_date_b, viewcnt, likecnt,  stmt_b, cont_b, id_writer)
+values (#{cateCode},#{bno}, #{title}, sysdate, sysdate, #{viewcnt}, #{likecnt}, #{stmt_b}, #{cont_b}, #{id_writer})
+  
 
-   <!--  insert into rehome (bno, rno, mno, gender, age, neut, vac, cost, quecnt)
-   values (#{bno},#{rno}, #{mno}, #{gender}, #{age}, #{neut}, #{vac}, #{cost}, #{quecnt})-->
-   
-   <!--  insert into board (type_b, bno, title, cre_date_b, mod_date_b, viewcnt, likecnt, reportcnt, stmt_b, cont_b, id_writer)
-   values (#{type_b},#{bno}, #{title}, sysdate, sysdate, #{viewcnt}, #{likecnt}, #{reportcnt}, #{stmt_b}, #{cont_b}, #{id_writer})
-   select * from dual-->
+ select * from dual
+ 
 </insert>
-
-<select id="rehomeList" resultType="com.hk.poom.dto.RehomeAddDTO">
-SELECT * FROM REHOME r, BOARD b WHERE r.BNO = b.BNO 
-</select>
 
 <select id="rehomeGetOne" resultType="com.hk.poom.dto.RehomeUpdateDTO">
 select * from BOARD  where BNO=#{bno} 
@@ -42,20 +46,17 @@ set  bno=#{bno}
 ,    neut=#{neut}
 ,    vac=#{vac}
 ,    cost=#{cost}
-,    cat_r=#{cat_r}
     where bno=#{bno}
      
 
 </update>
 <update id="rehomeUpdate1">
 update board
-set  type_b=#{type_b}
-,    bno=#{bno}
+set  bno=#{bno}
 ,    title=#{title}
 ,    mod_date_b=sysdate
 ,    viewcnt=#{viewcnt}+1
 ,    likecnt=#{likecnt}
-,    reportcnt=#{reportcnt}
 ,    stmt_b=#{stmt_b}
 ,    cont_b=#{cont_b}
 ,    id_writer=#{id_writer}
@@ -73,14 +74,23 @@ end
 }
 </delete> 
 
-<select id="rehomeGetOne1" resultType="com.hk.poom.dto.RehomeReportDTO">
-select * from BOARD  where BNO=#{bno} 
+<select id="rehomeCateName" resultType="string">
+select catename from category  where catecode=#{cateCode} 
 </select>
-   
+
+<update id="rehomeCateUpdate">
+	update board set catename=#{cateName} where bno=#{bno}
+</update>
+
+    
+<select id="rehomeRead" resultType="com.hk.poom.dto.RehomeReadDTO">
+SELECT * FROM rehome  WHERE bno=#{bno} 
+
+</select>    
+  
 <insert id="report" parameterType="com.hk.poom.dto.RehomeReportDTO">
 insert into report (bno, report_cont)
 values (#{bno}, #{report_cont})
-</insert>    
+</insert> 
     
- 
 </mapper>

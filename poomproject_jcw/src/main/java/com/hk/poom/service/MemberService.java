@@ -57,5 +57,10 @@ public class MemberService {
 	public FindPwdDTO memberFindPwd( FindPwdDTO findPwdDTO ) {
 		return memberMapper.memberFindPwd( findPwdDTO );
 	}
+	
+	public int memberPwdUpdate( FindPwdDTO findPwdDTO ) {
+		
+		return memberMapper.memberPwdUpdate( findPwdDTO );
+	}
 
 }

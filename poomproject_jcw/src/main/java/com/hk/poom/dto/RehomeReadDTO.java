@@ -3,40 +3,62 @@ package com.hk.poom.dto;
 import java.util.Date;
 
 public class RehomeReadDTO {
-	
-	//게시글번호
-	int bno;           
-	//분양글번호
-	int rno;       
+
+	//글 유형
+	String cateName;
+	//게시글 번호
+	int bno;
+	//분양글 번호
+	int rno;
+	//회원번호
+	int mno;
 	//제목
-	String title;           
+	String title;
 	//작성자
-	String id_writer;     
-	//내용
-	String cont_b;          
-	//사진1-main
-	String img_r1;      
-	//사진2
-	String img_r2;      
-	//사진3
-	String img_r3;      
-	//사진4
-	String img_r4;      
-	//사진5
+	String id_writer;
+	//분양글 사진1-main
+	String img_r1;
+	//분양글 사진2
+	String img_r2;
+	//분양글 사진3
+	String img_r3;
+	//분양글 사진4
+	String img_r4;
+	//분양글 사진5
 	String img_r5;
+	//카테고리 대분류
+	String cateCode;
+	//카테고리 소분류
+	String cateCodeRef;
+	//성별
+	int gender;
+	//접종여부
+	int vac;
+	//나이
+	int age;
+	//중성화여부
+	int neut;
+	//분양가
+	int cost;
+	//내용
+	String cont_b;
+	//작성일
+	Date cre_date_b;
 	//수정일
-	Date mod_date_re;
+	Date mod_date_b;
+
 	//조회수
-	int viewCnt;
-	//문의수
-	
-	//관심수
-	int likeCnt;
-	//신고횟수
-	int reportCnt;
-	
-	
+	int viewcnt;
+	//좋아요수
+	int likecnt;
+	//신고수
+	int reportcnt;
+	//회원상태
+	int stmt_b;
+
+
 	// Getter & Setter
+
 	public int getBno() {
 		return bno;
 	}
@@ -60,12 +82,6 @@ public class RehomeReadDTO {
 	}
 	public void setId_writer(String id_writer) {
 		this.id_writer = id_writer;
-	}
-	public String getCont_b() {
-		return cont_b;
-	}
-	public void setCont_b(String cont_b) {
-		this.cont_b = cont_b;
 	}
 	public String getImg_r1() {
 		return img_r1;
@@ -97,38 +113,109 @@ public class RehomeReadDTO {
 	public void setImg_r5(String img_r5) {
 		this.img_r5 = img_r5;
 	}
-	public Date getMod_date_re() {
-		return mod_date_re;
+
+	public int getGender() {
+		return gender;
 	}
-	public void setMod_date_re(Date mod_date_re) {
-		this.mod_date_re = mod_date_re;
+	public void setGender(int gender) {
+		this.gender = gender;
 	}
-	public int getViewCnt() {
-		return viewCnt;
+	public int getVac() {
+		return vac;
 	}
-	public void setViewCnt(int viewCnt) {
-		this.viewCnt = viewCnt;
+	public void setVac(int vac) {
+		this.vac = vac;
 	}
-	public int getLikeCnt() {
-		return likeCnt;
+	public int getAge() {
+		return age;
 	}
-	public void setLikeCnt(int likeCnt) {
-		this.likeCnt = likeCnt;
+	public void setAge(int age) {
+		this.age = age;
 	}
-	public int getReportCnt() {
-		return reportCnt;
+	public int getNeut() {
+		return neut;
 	}
-	public void setReportCnt(int reportCnt) {
-		this.reportCnt = reportCnt;
+	public void setNeut(int neut) {
+		this.neut = neut;
 	}
-	
-	// toString()
+	public int getCost() {
+		return cost;
+	}
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+	public String getCont_b() {
+		return cont_b;
+	}
+	public void setCont_b(String cont_b) {
+		this.cont_b = cont_b;
+	}
+	public Date getCre_date_b() {
+		return cre_date_b;
+	}
+	public void setCre_date_b(Date cre_date_b) {
+		this.cre_date_b = cre_date_b;
+	}
+	public Date getMod_date_b() {
+		return mod_date_b;
+	}
+	public void setMod_date_b(Date mod_date_b) {
+		this.mod_date_b = mod_date_b;
+	}
+	public int getViewcnt() {
+		return viewcnt;
+	}
+	public void setViewcnt(int viewcnt) {
+		this.viewcnt = viewcnt;
+	}
+
+	public int getLikecnt() {
+		return likecnt;
+	}
+	public void setLikecnt(int likecnt) {
+		this.likecnt = likecnt;
+	}
+
+	public int getReportcnt() {
+		return reportcnt;
+	}
+	public void setReportcnt(int reportcnt) {
+		this.reportcnt = reportcnt;
+	}
+
+	public int getStmt_b() {
+		return stmt_b;
+	}
+	public void setStmt_b(int stmt_b) {
+		this.stmt_b = stmt_b;
+	}
+	public int getMno() {
+		return mno;
+	}
+	public void setMno(int mno) {
+		this.mno = mno;
+	}
+
+	public String getCateName() {
+		return cateName;
+	}
+	public void setCateName(String cateName) {
+		this.cateName = cateName;
+	}
+	public String getCateCode() {
+		return cateCode;
+	}
+	public void setCateCode(String cateCode) {
+		this.cateCode = cateCode;
+	}
 	@Override
 	public String toString() {
-		return "RehomeReadDTO [bno=" + bno + ", rno=" + rno + ", title=" + title + ", id_writer=" + id_writer
-				+ ", cont_b=" + cont_b + ", img_r1=" + img_r1 + ", img_r2=" + img_r2 + ", img_r3=" + img_r3
-				+ ", img_r4=" + img_r4 + ", img_r5=" + img_r5 + ", mod_date_re=" + mod_date_re + ", viewCnt=" + viewCnt
-				+ ", likeCnt=" + likeCnt + ", reportCnt=" + reportCnt + "]";
+		return "RehomeAddDTO [cateName=" + cateName + ", bno=" + bno + ", rno=" + rno + ", mno=" + mno + ", title=" + title
+				+ ", id_writer=" + id_writer + ", img_r1=" + img_r1 + ", img_r2=" + img_r2 + ", img_r3=" + img_r3
+				+ ", img_r4=" + img_r4 + ", img_r5=" + img_r5 + ", cateCode=" + cateCode + ", gender=" + gender + ", vac="
+				+ vac + ", age=" + age + ", neut=" + neut + ", cost=" + cost + ", cont_b=" + cont_b + ", cre_date_b="
+				+ cre_date_b + ", mod_date_b=" + mod_date_b + ", viewcnt=" + viewcnt + ", likecnt=" + likecnt
+				+ ", reportcnt=" + reportcnt + ", stmt_b=" + stmt_b + "]";
 	}
-	
+
 }

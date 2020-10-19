@@ -4,15 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>아이디 찾기 결과</title>
+<title>Insert title here</title>
 <jsp:include page="../include/inHead.jsp"></jsp:include>
 </head>
 <jsp:include page="../include/header.jsp"></jsp:include>
-	<p>아이디는 메일로 보내드립니다.</p>
-	<p>10초후 메인 홈페이지로 이동됩니다.</p>
-	
-<script>
-setTimeout( function() { window.location='/poom/login'; } ,10000);
-</script>
+<p>결제 실패</p>
+<a href="list">리스트로 가기</a>
 
 <jsp:include page="../include/footer.jsp"></jsp:include>

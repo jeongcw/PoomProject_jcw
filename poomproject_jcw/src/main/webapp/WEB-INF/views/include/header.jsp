@@ -32,12 +32,12 @@
       <li class="nav-item">
         <a class="nav-link" href="/poom/register/new">개인 회원가입</a>
       </li>
-      <li class="nav-item" style="color: white;">
-        ${loginMember.name}
+      <li class="nav-item">
+        <a href="/poom/mypage?mno=${loginMember.mno}" style="color: white;">${loginMember.name}</a>
       </li>
       <li class="nav-item">
       	<a href="/poom/mypage?mno=${loginMember.mno}">
-		  <img style="border-radius:20px" onerror="this.src='/resources/img/testImg.jpg'" src="/resources/prof/${loginMember.prof}" width="40px" height="40px">
+		  <img style="border-radius:20px" onerror="this.src='/resources/img/testImg.jpg'" src="${loginMember.prof}" width="40px" height="40px">
 		</a>
       </li>
       <li class="nav-item">

@@ -70,5 +70,8 @@
   WHERE ROWNUM = 1
 </select>
 
+<update id="memberPwdUpdate" >
+	update member set pwd=#{pwd} where id=#{id}
+</update>
 
 </mapper>

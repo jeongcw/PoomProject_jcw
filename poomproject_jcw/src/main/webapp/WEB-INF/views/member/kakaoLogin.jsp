@@ -8,8 +8,101 @@
 <jsp:include page="../include/inHead.jsp"></jsp:include>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-<!-- 다음 주소찾기 -->
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<!-- 카카오 로그인 -->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+	// SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+	Kakao.init('ef974df3af8acda7ed3f3983cb387a81');
+	// SDK 초기화 여부를 판단합니다.
+	console.log(Kakao.isInitialized());
+
+	// 사용자 정보 요청
+// 	function getInfoKakao() {
+		console.log('getInfoKakao() 실행');
+		Kakao.API.request({
+			url: '/v2/user/me',
+			success: function(res) {
+ 				//alert( JSON.stringify(res) );
+ 				// 사용자 닉네임
+ 				var name = res.kakao_account.profile.nickname;
+ 				// 사용자 이메일
+ 				var email = res.kakao_account.email;
+ 				// 사용자 프로필 사진
+ 				var profUrl = res.kakao_account.profile.profile_image_url;
+				$('#getInfo').append("<tr><td>닉네임 : " + name + "</td></tr>");
+				$('#getInfo').append("<tr><td>이메일 : " + email + "</td></tr>");
+				$('#getInfo').append("<tr><td>프로필 주소 : " + profUrl + "</td></tr>");
+ 				$('#name').setAttribute("value", name);
+ 				$('#emailDupChk').setAttribute("value", email);
+ 				$('#profUrl').setAttribute("value", profUrl);
+ 				
+// 				$("#getInfo").html(JSON.stringify(res));
+// 				$.each( res, function( k1, v1 ) {
+//  	                 var totalKey = k1;
+//  	                 var totalVal = v1;
+// 	                 // kakao_account 안에 있는 정보만 가져올거야 -> profile_url이랑 email, nickname을 가져올거야
+// 	                 if ( totalKey==="kakao_account" ) {
+// 						$.each(totalVal, function(k2, v2) {
+//  							var propKey = k2;
+//  							var propVal = v2;
+//  							// profile 안에 있는 정보를 가져올거야 -> profile_url 가져올거야
+// 							if ( propKey==="profile" ) {
+// 								$.each(propVal, function(k3, v3) {
+//  									var profKey = k3;
+//  									var profVal = v3;
+// 									$('#getInfo').append("<tr><td>" + profKey + "</td></tr>");
+// 									$('#getInfo').append("<tr><td>" + profVal + "</td></tr>");
+// 								})
+// 							} else if ( propKey==="email") {
+// 								$('#getInfo').append("<tr><td>" + propKey + "</td></tr>");
+// 								$('#getInfo').append("<tr><td>" + propVal + "</td></tr>");
+// 							} else if ( propKey==="nickname") {
+// 								$('#getInfo').append("<tr><td>" + propKey + "</td></tr>");
+// 								$('#getInfo').append("<tr><td>" + propVal + "</td></tr>");
+// 							}
+// 						})
+// 		             }
+// 	            })
+			},
+			fail: function(error) {
+				alert( 'login success, but failed to request user information: ' + JSON.stringify(error) );
+			},
+		})
+// 	}
+// 	function getInfoKakao() {
+// 		console.log('getInfoKakao() 실행');
+// 		Kakao.API.request({
+// 			url: '/v2/user/me',
+// 			success: function(response) {
+// 				console.log(response);
+// 			},
+// 			fail: function(error) {
+// 				console.log(error);
+// 			}
+// 		});
+// 	}
+
+	// 사용자 정보 저장
+	function setInfoKakao() {
+		console.log('setInfoKakao() 실행');
+		Kakao.API.request({
+		    url: '/v1/user/update_profile',
+		    data: {
+		        properties: {
+		            mno : '김민희'
+		        },
+		    },
+		    success: function(res) {
+		        console.log("setInfo res =" + JSON.stringify(res));
+		    },
+		    fail: function(error) {
+		        console.log( 'login success, but failed to request user information: ' + JSON.stringify(error) );
+		    }
+		});
+	}
+})
+</script>
 <script>
 
 // 유효성 기능 활성화
@@ -211,65 +304,6 @@ function checkEmail(){
 	// 유효성 검사가 실패했을때, 회원가입 버튼이 안 눌리게 하는 조건 추가해야됨!
 	
 }
-//이메일 인증 이메일 보내기
-$(document).on("click", "#emailBtn", function(){
-	      var userEmail = $("#emailDupChk").val();
-	      $.ajax({
-	         data:{email:userEmail},
-	         dataType:"json",
-	         method: "post",
-	         url: "/poom/createEmailCheck",
-	         success : function(data){
-	            if(data==false){
-	               alert("이메일을 입력해주세요");
-	            }else{
-	               alert("이메일이 발송되었습니다. 인증번호 확인 후 입력해주세요");
-	            }
-	               
-	         },
-	         error: function(data){
-	               alert("에러가 발생했습니다.");
-	               return false;
-	         }
-	      });
-	   });
-
-
-//이메일 인증 확인코드
-	   $(document).on("click", "#codeBtn", function(){
-	      var email = $("#emailDupChk").val();
-	      var userCode = $("#checkCode").val();
-	      console.log('userCode:',userCode)
-	      $.ajax({
-	         //data:{code:userCode},
-	         data:{
-	            email:email,            
-	            checkCode:userCode
-	         },
-	         method: "post",
-	         dataType: "json",
-	         //dataType: "json",
-	         url:"/poom/checkCode11",
-	         success:function(data){
-	            console.log("data는",data);
-	            if(data==0){
-	               //alert("인증이 완려되었습니다.");
-	                $('#checkCodeRet').text('인증이 완료되었습니다.');
-					$('#checkCodeRet').css('color', 'green');
-	               isComfirm = true; // 인증완료값
-	            } else {
-	               //alert("인증번호를 잘못 입력하셨습니다. 인증번호를 ");
-	                $('#checkCodeRet').text('인증번호를 잘못 입력하셨습니다. 다시 입력해주세요.');
-					$('#checkCodeRet').css('color', 'red');
-
-	            }
-	         },
-	         error:function(error){
-	            alert("에러가 발생했습니다.");
-	            console.log('error - email check:', error)
-	         }
-	      });
-	   });
 
 
 //-----------------[ 연락처 function ]-----------------
@@ -348,116 +382,12 @@ function execDaumPostcode() {
 	
 }
 
-//------------------------맨처음 만든거-----------------------------------------
-
-
-// 	$().ready(function() {
-		
-// 		// ID 중복체크
-// 		$("#idDupChk").change(function() {
-		
-// 			var idDupChk = $("#idDupChk").val();
-// 			//alert("idDupChk = " + idDupChk);
-			
-// 			$.ajax({
-// 				url : '/poom/register/idDupChk',
-// 				data : {
-// 					id : idDupChk
-// 				},
-// 					dataType : 'text', /*html, text, json, xml, script*/
-// 					method : 'post',
-// 					success : function(data) {
-// 						//alert("idDupChk ajax 성공");
-					
-// 						if ( data==0 ) {
-// 							//alert("중복되지 않은 ID");
-// 							$("#idDupChkRet").attr("type", "text");
-// 							$("#idDupChkRet").attr("style", "color:green;");
-// 							$("#idDupChkRet").val("사용가능한 ID입니다.");
-// 						} else if ( data==1 ){
-// 							//alert("중복된 ID");
-// 							$("#idDupChkRet").attr("type", "text");
-// 							$("#idDupChkRet").attr("style", "color:red;");
-// 							$("#idDupChkRet").val("이미 사용중인 ID입니다.");
-// 						} else {
-// 							//alert("에러");
-// 							$("#idDupChkRet").val("관리자에게 문의하세요.");
-// 					}
-// 				},
-// 				error : function() {
-// 					//alert("idDupChk ajax 에러");
-// 				}
-// 			});
-		
-// 		});
-
-// 		// email 중복체크
-// 		$("#emailDupChk").change(function() {
-			
-// 			var emailDupChk = $("#emailDupChk").val();
-// 			//alert("emailDupChk = " + emailDupChk);
-			
-// 			$.ajax({
-// 				url : '/poom/register/emailDupChk',
-// 				data : {
-// 					email : emailDupChk
-// 				},
-// 					dataType : 'text',
-// 					method : 'post',
-// 					success : function(data) {
-// 						//alert("emailDupChk ajax 성공");
-					
-// 						if ( data==0 ) {
-// 							//alert("중복되지 않은 email");
-// 							$("#emailDupChkRet").attr("type", "text");
-// 							$("#emailDupChkRet").attr("style", "color:green;");
-// 							$("#emailDupChkRet").val("사용가능한 email입니다.");
-// 						} else if ( data==1 ){
-// 							//alert("중복된 eamil");
-// 							$("#emailDupChkRet").attr("type", "text");
-// 							$("#emailDupChkRet").attr("style", "color:red;");
-// 							$("#emailDupChkRet").val("이미 사용중인 email입니다.");
-// 						} else {
-// 							//alert("에러");
-// 							$("#emailDupChkRet").val("관리자에게 문의하세요.");
-// 					}
-// 				},
-// 				error : function() {
-// 					//alert("pwdDupChk ajax 에러");
-// 				}
-// 			});
-		
-// 		});
-
-// 		// pwd 일치확인
-// 		$("#pwdMatChk").change(function() {
-
-// 			var pwd = $("#pwd").val();
-// 			var pwdMatChk = $("#pwdMatChk").val();
-// 			//alert("pwd = " + pwd);
-// 			//alert("pwdMatChk = " + pwdMatChk);
-
-// 			if ( pwd==pwdMatChk ) {
-// 				//alert("pwd 일치");
-// 				$("#pwdMatChkRet").attr("type", "text");
-// 				$("#pwdMatChkRet").attr("style", "color:green;");
-// 				$("#pwdMatChkRet").val("비밀번호가 일치합니다.");
-// 			} else {
-// 				//alert("pwd 불일치");
-// 				$("#pwdMatChkRet").attr("type", "text");
-// 				$("#pwdMatChkRet").attr("style", "color:red;");
-// 				$("#pwdMatChkRet").val("비밀번호가 다릅니다.");
-// 			}
-			
-// 		});
-
-// 	});
 </script>
 
 </head>
 <jsp:include page="../include/header.jsp"></jsp:include>
-
-	<form action="new" method="post" id="registerNewForm" enctype="multipart/form-data">
+<div id="getInfo"></div>
+	<form action="/poom/register/new" method="post" id="registerNewForm" enctype="multipart/form-data">
 		<fieldset style="width:725px; margin-right:1000px;">
 			<legend style="font-size:25px;"><b>정보 입력</b></legend>
 				<div><label><b>* 아이디 : </b></label>
@@ -470,15 +400,10 @@ function execDaumPostcode() {
 					<input type="password" name="pwd" id="pwdMatChk" placeholder="비밀번호 재입력" oninput="reCheckPwd()">
 					<div class="validation" id="pwdMatChkRet" style="font-size: 15px;"></div></div>
 				<div><label><b>* 이메일 : </b></label>
-					<input type="email" name='email' id="emailDupChk" placeholder="이메일" oninput="chcekEmail()">
-					<button type="button" id="emailBtn" onclick="">본인인증</button><br/>
-					<div class="validation" id="emailDupChkRet" style="font-size: 15px;"></div>
-					인증코드 :	
-		 				<input type="text" name="checkCode" id="checkCode" placeholder="인증번호">
-		 				<button type="button" id="codeBtn" onclick="">인증번호 확인</button><br/>
-		 				<div class="validation" id="checkCodeRet" style="font-size: 15px;"></div></div>
+					<input type="email" name='email' id="emailDupChk" oninput="chcekEmail()">
+					<div class="validation" id="emailDupChkRet" style="font-size: 15px;"></div></div>
 				<div><label><b>* 이름 : </b></label>
-					<input type="text" name='name' placeholder="이름"></div>
+					<input type="text" name='name' id="name"></div>
 				<div><label><b>* 연락처 : </b></label>
 					<input type="tel" name='tel' id='tel' placeholder="연락처">
 					<div class="validation" id="telRet" style="font-size: 15px;"></div></div>
@@ -489,7 +414,7 @@ function execDaumPostcode() {
             		<input type="text" id="extraAddress" placeholder="참고항목" name="extraAddr"><br />
             		<input type="text" id="detailAddress" placeholder="상세주소" name="secondAddr"></div>
 				<div><label><b>프로필 사진 : </b></label>
-					<input type="file" name="prof" value=""></div>
+					<input type="text" id="profUrl"></div>
 				<div><label><b>한 줄 소개 : </b></label>
 					<textarea rows="3" cols="100" name="ment"  placeholder="한 줄 소개"></textarea></div>
 				<div><label><b>관심 동물 : </b></label>

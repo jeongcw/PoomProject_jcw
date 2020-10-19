@@ -4,5 +4,17 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hk.poom.mapper.PageMapper">
 
+<select id="mypage" resultType="com.hk.poom.dto.MypageDTO">
+	SELECT * FROM MEMBER m ,PERSON p WHERE m.MNO=p.MNO AND m.mno=#{mno}
+</select>
+
+<update id="mypageUpdate">
+	UPDATE MEMBER AS m, PERSON AS p
+		SET (m.PWD, m.EMAIL, m.NAME, m.ZIPCODE, m.FIRSTADDR, m.SECONADDR, m.EXTRAADDR, m.TEL, m.MEMT, m.MOD_DATE_M, p.FAV, p.PET)
+		VALUES (#{pwd}, #{email}, #{name}, #{zipCode}, #{firstAddr}, #{seconAddr}, #{extraAddr}, #{tel}, #{ment}, SYSDATE, #{fav}, #{pet})
+		WHERE m.MNO=#{mno} AND p.MNO=#{	mno} 
+</update>
+
+
 
 </mapper>

@@ -75,40 +75,40 @@ public class AllRestController {
 	}
 	
 	// 이메일 보내기 관련 
-		@PostMapping(path="/createEmailCheck", produces=MediaType.APPLICATION_JSON_VALUE)
-			public boolean sendMail(EmailCheck emailCheck) {
-				
-				  int randomCode = new Random().nextInt(10000)+1000; //인증코드 랜덤 만든거
-			      String joinCode = String.valueOf(randomCode); //집어넣은거 
-			      emailCheck.setCode(joinCode); //이메일체크 빈통에 setCode로 joinCode를 넣음
-			      
-			      System.out.println("EmailCheck vo는"+emailCheck);
-			      String email = emailCheck.getEmail(); //이메일 체크빈통에 이메일을 뺀 사용자가 친 이메일이 들어감
-			      
-			      System.out.println("email은"+ email);
-		      
-			      
-			      
-			      emailService.addEmailCheck(emailCheck);
-
-
-				  String subject = "회원가입을 위한 인증 이메일 입니다."; //제목
-			      StringBuilder sb = new StringBuilder(); // 본문내용
-			      sb.append("이메일 인증번호는").append(joinCode).append("입니다."); //본문내용
-			      return emailService.send(subject, sb.toString(), "ydp12341234@gmail.com", email);
-
-			}
+	@PostMapping(path="/createEmailCheck", produces=MediaType.APPLICATION_JSON_VALUE)
+	public boolean sendMail(EmailCheck emailCheck) {
 			
-		//코드 체크
-			   @PostMapping(path="/checkCode11", produces=MediaType.APPLICATION_JSON_VALUE)
-			   public String checkCode(Model model, @RequestParam("email") String email, @RequestParam("checkCode") String checkCode) {
-			      String dbJoinCode = emailService.getDbCode(email); //DB저장된 코드를 불러온다  email로 던저서 DB같다온거고 
-			      if(checkCode.equals(dbJoinCode)) { //checkCode == dbJoinCode같을때 0반환 
-			         return "0";
-			      } else {
-			         return "1";
-			      }
-			      
-			   }
+		int randomCode = new Random().nextInt(10000)+1000; //인증코드 랜덤 만든거
+		String joinCode = String.valueOf(randomCode); //집어넣은거 
+		emailCheck.setCode(joinCode); //이메일체크 빈통에 setCode로 joinCode를 넣음
+		      
+		 System.out.println("EmailCheck vo는"+emailCheck);
+		 String email = emailCheck.getEmail(); //이메일 체크빈통에 이메일을 뺀 사용자가 친 이메일이 들어감
+		      
+		 System.out.println("email은"+ email);
+	      
+		      
+		      
+		 emailService.addEmailCheck(emailCheck);
+
+
+		 String subject = "회원가입을 위한 인증 이메일 입니다."; //제목
+		 StringBuilder sb = new StringBuilder(); // 본문내용
+		 sb.append("이메일 인증번호는").append(joinCode).append("입니다."); //본문내용
+		 return emailService.send(subject, sb.toString(), "ydp12341234@gmail.com", email);
+
+	}
+		
+	//코드 체크
+	@PostMapping(path="/checkCode11", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String checkCode(Model model, @RequestParam("email") String email, @RequestParam("checkCode") String checkCode) {
+		 String dbJoinCode = emailService.getDbCode(email); //DB저장된 코드를 불러온다  email로 던저서 DB같다온거고 
+		 if(checkCode.equals(dbJoinCode)) { //checkCode == dbJoinCode같을때 0반환 
+			 return "0";
+		 } else {
+		     return "1";
+		 }
+		      
+		}
 
 }

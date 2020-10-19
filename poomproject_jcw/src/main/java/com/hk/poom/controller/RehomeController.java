@@ -1,10 +1,7 @@
 package com.hk.poom.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +9,8 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,16 +18,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.hk.poom.HomeController;
+import com.hk.poom.dto.CategoryDTO;
 import com.hk.poom.dto.RehomeAddDTO;
 import com.hk.poom.dto.RehomeReportDTO;
 import com.hk.poom.dto.RehomeUpdateDTO;
 import com.hk.poom.service.RehomeService;
 
+import net.sf.json.JSONArray;
+
 @Controller
 public class RehomeController {
-   
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
    @Autowired
    RehomeService rehomeService;
    
@@ -41,24 +44,58 @@ public class RehomeController {
       
       return "rehome/rehomeList";
    }
+
    
-   @GetMapping("/poom/rehome/add")
-   public String rehomeAdd(Model model ) {
-      
-      
-      return "rehome/rehomeAdd";
-   }
+//   @GetMapping("/poom/rehome/add")
+//   public String rehomeAdd(Model model ) {
+//	   logger.info("카테고리불러오기");
+//	   List<CategoryDTO> category = null;
+//	    category = rehomeService.category();
+//	    System.out.println(category);
+//	    model.addAttribute("category", JSONArray.fromObject(category));
+//	    logger.info("카테고리"+model);
+//      return "rehome/rehomeAdd";
+//   }
    
+ @GetMapping("/poom/rehome/add")
+ public String rehomeAdd(Model model, RehomeAddDTO rehomeAddDTO) throws Exception{
+    logger.info("카테고리불러와야해");
+    
+    List<CategoryDTO> category =null;
+    category = rehomeService.category();
+    model.addAttribute("category",JSONArray.fromObject(category));
+ 
+    logger.info("category" + model);
+    
+    
+    return "rehome/rehomeAdd";
+ }
    
+//   @PostMapping("/poom/rehome/add")
+//   public String rehomeAddPost(Model model, RehomeAddDTO rehomeAddDTO ) {
+//	   List<CategoryDTO> category = null;
+//	    category = rehomeService.category();
+//	    model.addAttribute("category", JSONArray.fromObject(category));
+//      
+//      rehomeService.rehomeAdd(rehomeAddDTO);
+//      
+//      model.addAttribute("rehomeadd",rehomeAddDTO);
+//            
+//      return "rehome/rehomeAddPost";
+//   }
+   
+
    @PostMapping("/poom/rehome/add")
-   public String rehomeAddPost(@RequestParam("file") MultipartFile[] file, Model model, RehomeAddDTO rehomeAddDTO )throws IOException {
+   public String rehomeAddPost(@RequestParam("file") MultipartFile[] file, Model model,RehomeAddDTO rehomeAddDTO, @RequestParam("cateCode") String cateCode) {
+    //logger.info("form 전송");
+    //System.out.println(rehomeAddDTO.toString());
 	   for(int i=0; i<file.length; i++) {
-           System.out.println("================== file start ==================");
-           System.out.println("파일 이름: "+file[i].getName());
-           System.out.println("파일 실제 이름: "+file[i].getOriginalFilename());
-           System.out.println("파일 크기: "+file[i].getSize());
-           System.out.println("content type: "+file[i].getContentType());
-           System.out.println("================== file   END ==================");
+//           System.out.println("================== file start ==================");
+//           System.out.println("파일 이름: "+file[i].getName());
+//           System.out.println("파일 실제 이름: "+file[i].getOriginalFilename());
+//           System.out.println("파일 크기: "+file[i].getSize());
+//           System.out.println("content type: "+file[i].getContentType());
+//           System.out.println("================== file   END ==================");
            
            String realPath = sc.getRealPath("/resources/img/rehome/");
            String genID = UUID.randomUUID().toString();
@@ -80,7 +117,7 @@ public class RehomeController {
    	    File newProfFile = new File(realPath + img_r);
    	    oldProfFile.renameTo(newProfFile);	// 파일명 변경
    	  
-   	  System.out.println("-----------완성 파일명 : "+ img_r);
+//   	  System.out.println("-----------완성 파일명 : "+ img_r);
    	  try {
    			// 소스 디렉토리에 저장된 파일을 실행 디렉토리에 복사하라는 명령?
    			InputStream fileStream = file[i].getInputStream();
@@ -91,11 +128,20 @@ public class RehomeController {
    		}
        }
 
-      rehomeService.rehomeAdd(rehomeAddDTO);      
-      model.addAttribute("rehomeadd",rehomeAddDTO);
-            
-      return "rehome/rehomeAddPost";
+      model.addAttribute("rehomeAddPost",rehomeAddDTO);   
+	   rehomeService.rehomeAddPost(rehomeAddDTO);
+    
+    String cateName = rehomeService.rehomeCateName(cateCode);
+    //System.out.println("cateName=" + cateName);
+    rehomeAddDTO.setCateName(cateName);
+    //RehomeAddDTO catNameSet = rehomeAddDTO;
+    rehomeService.rehomeCateUpdate(rehomeAddDTO);
+    
+   return "rehome/rehomeAddPost";  
    }
+   
+   
+   
    
    @GetMapping("/poom/rehome/update")
    public String rehomeGetOne(@RequestParam("bno") int bno, Model model) {
@@ -129,6 +175,32 @@ public class RehomeController {
         
       return "redirect:/poom/rehome/list";
    }
+
+   @GetMapping("/poom/rehome/read")
+   public String rehomeRead(@RequestParam("bno") int bno, Model model) {
+	   logger.info("bno=" + bno);
+	   model.addAttribute("rehomeRead",rehomeService.rehomeRead(bno));
+	   return "rehome/rehomeRead";
+   }
+ 
+   @GetMapping("/poom/rehome/pay")
+   public String rehomePay() {
+	   return "rehome/pay";
+   }
+   
+   @GetMapping("/poom/rehome/paySuccess")
+   public String rehomePaySuccess() {
+	   return "rehome/paySuccess";
+   }
+   
+   @GetMapping("/poom/rehome/payFail")
+   public String rehomePayFail() {
+	   return "rehome/payFail";
+   }
+   
+   
+   
+   
    
    @GetMapping("/poom/rehome/report")
    public String rehomeGetOne1(@RequestParam("bno") int bno, Model model) {
@@ -141,5 +213,24 @@ public class RehomeController {
 	       
       return "rehome/reportDone";
    }
+   
+   
+   
+   
 }
    
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+

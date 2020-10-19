@@ -2,13 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Rehome List</title>
 <jsp:include page="../include/inHead.jsp"></jsp:include>
+
 </head>
 <jsp:include page="../include/header.jsp"></jsp:include>
 
@@ -21,87 +23,55 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">FAQ</h1>
-          <p class="mb-4">게시물 리스트
-          &nbsp;&nbsp;&nbsp;<a href="add">등록</a>
-          
+
+          <p class="mb-4">
+          <section class="jumbotron text-center" style='background-color: #151515;'>
+			<div class="container">
+				<h1>
+					<font color='white'>POOM</font>
+				</h1>
+				<p class="lead text-muted">
+					<font color='white'>구현중</font>
+				</p>
+				      <p>
+				       <a href="add">신규 등록</a>
+				      </p>
+			</div>
+		</section>
+
           </p>
 
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
+<div class="album py-5 bg-light">
+			<div class="container">
 
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" border="1">
-                  <thead>
+				<div class="row">					
+					<c:forEach items="${rehomeList}" var="rehomeList">
+						<div class="col-md-4">
+							<div class="card mb-4 shadow-sm">
+								<img src="/resources/img/rehome/${rehomeList.img_r1 }" onerror="this.style.display='none'" width="200" height="200" />
+								
+								<div class="card-body">
+									<p class="card-text"><c:out value="${rehomeList.title}" />/<c:out value="${rehomeList.cateName}" />/<c:out value="${rehomeList.age}" />/<c:out value="${rehomeList.cost}" /> </p>
+									<div class="d-flex justify-content-between align-items-center">
+										<div class="btn-group">
+											<button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='read?bno=${rehomeList.bno}'">보기</button>
+	
+										</div>
+										<small class="text-muted"><fmt:formatDate pattern="yyyy-MM-dd" value="${rehomeList.mod_date_b}" /></small>
+									</div>
+								</div>
+							</div>
+						</div>
                     <tr>
-                      <th>카테고리</th>
-                      <th>분양 카테고리</th>
-                      <th>게시글 번호</th>
-                      <th>분양글 번호</th>
-                      <th>제목</th>
-                      <th>작성자</th>
-                      <th>사진1</th>
-                      <th>사진2</th>
-                      <th>사진3</th>
-                      <th>사진4</th>
-                      <th>사진5</th>
-                      <th>성별</th>
-                      <th>나이</th>
-                      <th>분양가</th>                 
-                      <th>조회수</th>
-                      <th>관심수</th>
-                      <th>작성일</th>
-                      <th>수정일</th>
-                      <th>수정</th>
-                      <th>삭제</th>
-                      
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <c:forEach items="${rehomeList}" var="rehomeList">
-                    <tr>
-                      <td><c:out value="${rehomeList.type_b }" /></td>
-                       <td><c:choose>
-                          <c:when test="${rehomeList.cat_r eq '0' }">개</c:when>
-                          <c:when test="${rehomeList.cat_r eq '1' }">고양이</c:when></c:choose> </td>
-                        <td><c:out value="${rehomeList.bno }" /></td>
-                      <td><c:out value="${rehomeList.rno }" /></td>
-                       <td><c:out value="${rehomeList.title }" /></td>
-                      <td><c:out value="${rehomeList.id_writer }" /></td>
-                      <td><img src="/resources/img/rehome/${rehomeList.img_r1 }" onerror="this.style.display='none'" width="200" height="200" /></td>
-                      <td><img src="/resources/img/rehome/${rehomeList.img_r2 }" onerror="this.style.display='none'" width="200" height="200" /></td>
-                      <td><img src="/resources/img/rehome/${rehomeList.img_r3 }" onerror="this.style.display='none'" width="200" height="200" /></td>
-                      <td><img src="/resources/img/rehome/${rehomeList.img_r4 }" onerror="this.style.display='none'" width="200" height="200" /></td>
-                      <td><img src="/resources/img/rehome/${rehomeList.img_r5 }" onerror="this.style.display='none'" width="200" height="200" /></td>
-                      <td><c:out value="${rehomeList.gender }" /></td>
-                      <td><c:out value="${rehomeList.age }" /></td>
-                      <td><c:out value="${rehomeList.cost }" /></td>                     
-                      <td><c:out value="${rehomeList.viewcnt }" /></td>
-                      <td><c:out value="${rehomeList.likecnt }" /></td>                      
-                      <td><fmt:formatDate pattern="yyyy-MM-dd" value="${rehomeList.cre_date_b }" /></td>
-                      <td><fmt:formatDate pattern="yyyy-MM-dd" value="${rehomeList.mod_date_b }" /></td>
-                      <td><a href='update?bno=<c:out value="${rehomeList.bno}" />' ><c:out value="수정" /></a></td>
-                      <td><a href='delete?bno=<c:out value="${rehomeList.bno}" />' ><c:out value="삭제" /></a></td>
-                       <td><a href="#" onClick="window.open('report?bno=<c:out value="${rehomeList.bno}"  />','window_name','width=430,height=500,location=no,status=no,scrollbars=yes');"><c:out value="신고" /></a></td>
-                       
-                    </tr>
-                    <!-- <script language="javascript">
-  function popup() { window.open("report", "a", "width=400, height=300, left=100, top=50"); }
-  </script> -->
+
                     </c:forEach>
-                  </tbody>
-                </table>
-               
-               
-              </div>
-            </div>
-          </div>
+					
+					
+				</div>
+			</div>
+		</div>
 
-        </div>
-        <!-- /.container-fluid -->
 
-      </div>
-      <!-- End of Main Content -->
+
 
 <jsp:include page="../include/footer.jsp"></jsp:include>

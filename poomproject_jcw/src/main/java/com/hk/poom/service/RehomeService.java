@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hk.poom.dto.CategoryDTO;
 import com.hk.poom.dto.RehomeAddDTO;
 import com.hk.poom.dto.RehomeListDTO;
 import com.hk.poom.dto.RehomeReadDTO;
@@ -20,10 +21,6 @@ public class RehomeService {
 
 	public List<RehomeAddDTO> rehomeList( ) {
 		return rehomeMapper.rehomeList( );
-	}
-   
-	public int rehomeAdd( RehomeAddDTO rehomeAddDTO ) {
-		return rehomeMapper.rehomeAdd( rehomeAddDTO );
 	}
 
 	public RehomeUpdateDTO rehomeGetOne( int bno ) {
@@ -43,11 +40,32 @@ public class RehomeService {
 	public RehomeReadDTO rehomeRead( int bno ) {
 		return rehomeMapper.rehomeRead( bno );
 	}
+	public List<CategoryDTO> category(){
+		return rehomeMapper.category();
+	}
+
+
+	public int rehomeAddPost(RehomeAddDTO rehomeAddDTO) {
+		return rehomeMapper.rehomeAddPost(rehomeAddDTO);
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public String rehomeCateName( String cateCode ) {
+		return rehomeMapper.rehomeCateName( cateCode );				
+	}
+	
+	public int rehomeCateUpdate(RehomeAddDTO rehomeAddDTO ) {
+		return rehomeMapper.rehomeCateUpdate(rehomeAddDTO);				
+	}
 	public RehomeReportDTO rehomeGetOne1( int bno ) {
 		return rehomeMapper.rehomeGetOne1( bno );
 	}
 	public int report( RehomeReportDTO report ) {
 		return rehomeMapper.report(report);			
 	}
+	
+	
+	
 	
 }

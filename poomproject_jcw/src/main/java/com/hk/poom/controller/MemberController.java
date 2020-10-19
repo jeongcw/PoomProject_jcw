@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hk.poom.dto.FindIdDTO;
+import com.hk.poom.dto.FindPwdDTO;
 import com.hk.poom.dto.LoginDTO;
 import com.hk.poom.dto.ProfUploadDTO;
 import com.hk.poom.dto.RegisterComDTO;
 import com.hk.poom.dto.RegisterPerDTO;
+import com.hk.poom.service.EmailService;
 import com.hk.poom.service.MemberService;
 
 
@@ -40,6 +43,9 @@ public class MemberController {
 	
 	@Autowired
 	ServletContext sc;
+	
+	@Autowired
+	EmailService emailService;
 	
 	@GetMapping("/poom/register/com")
 	public String registerCom( ) {
@@ -130,7 +136,7 @@ public class MemberController {
 	 	String realPath = sc.getRealPath("/resources/prof/");
 		String dbSaveName = "";
 		if ( prof.isEmpty() ) {	// 회원 가입할 때 프로필 사진을 업로드하지 않음 -> 기본 이미지를 prof 아래에 넣어놓고, 그 파일명을 기본값으로 넣어줌
-			dbSaveName = "baseProf.jpg";
+			dbSaveName = "/resources/prof/baseProf.jpg";
 		} else {	// 회원 가입할 때 프로필 사진을 업로드함
 			dbSaveName = nowTime + prof.getOriginalFilename().substring(prof.getOriginalFilename().lastIndexOf("."));	// 업로드시간.확장자
 			//logger.info("dbSaveName = " + dbSaveName);
@@ -149,13 +155,19 @@ public class MemberController {
 			}
 		}
 		// 2) 수정된 파일 이름으로 DB에 저장하기
+//		registerPerDTO.setProf(dbSaveName);
 		ProfUploadDTO profUploadDTO = new ProfUploadDTO();
 		profUploadDTO.setMno(registerPerDTO.getMno());
-		profUploadDTO.setDbSaveName(dbSaveName);
+		String realDbSave = "/resources/prof/" + dbSaveName;
+		profUploadDTO.setDbSaveName(realDbSave);
 		memberService.profUpload(profUploadDTO);
 		// Post.jsp에서 해당 이미지를 출력할 수 있게.. /resources로 시작하는 경로를 model에 저장해놓기
-		model.addAttribute("prof", "/resources/prof/" + dbSaveName);
+		model.addAttribute("prof", realDbSave);
 
+//		// 입력받은 회원 정보 저장
+//		memberService.memberRegisterPer(registerPerDTO);
+//		model.addAttribute("name", name);
+		
 		return "member/registerNewPost";
 	}
 	
@@ -200,6 +212,13 @@ public class MemberController {
 		return "member/logout";
 	}
 	
+	@GetMapping("/poom/login/kakao")
+	public String loginKakao() {
+		logger.info("MemberController_Get_/poom/login/kakao 실행");
+		
+		return "member/kakaoLogin";
+	}
+	
 	
 	@GetMapping("/poom/find/id")
 	public String findId( ) {
@@ -212,6 +231,15 @@ public class MemberController {
 	@PostMapping("/poom/find/id")
 	public String findIdPost( Model model, FindIdDTO findIdDTO ) {
 		
+		String subject = "POOM 계정 아이디 찾기입니다.";
+		StringBuilder sb = new StringBuilder();
+		
+		memberService.memberFindId(findIdDTO);
+		FindIdDTO idRet=memberService.memberFindId(findIdDTO);
+		sb.append("*"+idRet.getName()+"*").append("님의 아이디는 <").append(idRet.getId()).append("> 입니다.");
+		
+		emailService.send(subject, sb.toString(), "ydp12341234@gmail.com", findIdDTO.getEmail());
+		
 		model.addAttribute("findIdDTO", memberService.memberFindId(findIdDTO));
 		return "member/findIdPost";
 	}
@@ -221,6 +249,30 @@ public class MemberController {
 		
 		
 		return "member/findPwd";
+	}
+	@PostMapping("/poom/find/pwd")
+	public String findPwd(Model model, FindPwdDTO findPwdDTO ) {
+		
+		int randomPwd = new Random().nextInt(100000)+10000;
+		String joinPwd = String.valueOf(randomPwd);
+		findPwdDTO.setPwd(joinPwd);
+		memberService.memberPwdUpdate(findPwdDTO);
+		
+		String subject = "POOM 계정 비밀번호 찾기입니다. ";
+		StringBuilder sb = new StringBuilder(); // 본문내용
+		
+		//memberService.memberFindPwd(findPwdDTO);
+		
+		//FindPwdDTO pwdRet= memberService.memberFindPwd(findPwdDTO);
+		
+		
+		sb.append("*"+findPwdDTO.getName()+"*").append("님의 비밀번호는 <").append(joinPwd).append("> 입니다.");
+		
+		model.addAttribute("findPwdDTO", memberService.memberFindPwd(findPwdDTO));
+		
+		emailService.send(subject, sb.toString(), "ydp12341234@gmail.com", findPwdDTO.getEmail());
+
+		return "member/findPwdPost";
 	}
 	
 
